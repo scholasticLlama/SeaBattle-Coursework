@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="menuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="630.0" styleClass="anchor" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.ApplicationController">
+   <stylesheets>
+      <URL value="@application.css" />
+   </stylesheets>
+   <children>
+      <VBox layoutX="14.0" layoutY="186.0" prefHeight="230.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="startGameButton" mnemonicParsing="false" prefHeight="0.0" prefWidth="200.0" text="Начать игру">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="settingButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="145.0" text="Настройки">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="authorButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="145.0" text="Авторы">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="145.0" text="Выйти">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
