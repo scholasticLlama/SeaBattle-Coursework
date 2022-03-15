@@ -1,7 +1,8 @@
 package com.seabattle;
 
+import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -49,6 +50,9 @@ public class ArrangementWindowController {
     private ImageView oneDeck_4;
 
     @FXML
+    private ImageView emptyImage;
+
+    @FXML
     private Button randomShipPlaceButton;
 
     @FXML
@@ -74,92 +78,98 @@ public class ArrangementWindowController {
 
     @FXML
     void initialize() {
-        System.out.println(myField.getWidth());
         Label[][] cell = new Label[10][10];
         for (int i = 0; i < myField.getRowCount(); i++) {
             for (int j = 0; j < myField.getColumnCount(); j++) {
                 cell[i][j] = new Label();
                 cell[i][j].setPrefSize(30,30);
-                myField.add(cell[i][j], i, j);
+                myField.add(cell[i][j], j, i);
             }
         }
-//        ImageView[][] cell = new ImageView[10][10];
-//        for (int i = 0; i < myField.getRowCount(); i++) {
-//            for (int j = 0; j < myField.getColumnCount(); j++) {
-//                cell[i][j] = new ImageView();
-//                myField.add(cell[i][j], i, j);
-//            }
-//        }
+        HashMap<Integer, ImageView[]> ships = new HashMap<>();
+        ships.put(1, new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4});
+        ships.put(2, new ImageView[] {twoDeck_1, twoDeck_2, twoDeck_3});
+        ships.put(3, new ImageView[] {threeDeck_1, threeDeck_2});
+        ships.put(4, new ImageView[] {fourDeck});
+        for(int i = 1; i <= ships.size(); i++) {
+            //Integer key = entry.getKey();
+            ImageView[] value = ships.get(i);
+            for (int j = 0; j < value.length; j++) {
+                putShip(value[j], cell);
+            }
+        }
+        ImageView[] images = new ImageView[] {oneDeck_1, twoDeck_1, threeDeck_1, fourDeck};
+        for (int i = 0; i < images.length; i++) {
+            putShip(images[i], cell);
+        }
+    }
 
-        twoDeck_1.setOnDragDetected(event -> {
+    void  putShip(ImageView source, Label[][] targets) {
+        source.setOnDragDetected(event -> {
             /* drag was detected, start drag-and-drop gesture*/
             System.out.println("onDragDetected");
 
             /* allow any transfer mode */
-            Dragboard db = twoDeck_1.startDragAndDrop(TransferMode.ANY);
+            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 
             /* put a string on dragboard */
             ClipboardContent content = new ClipboardContent();
-            content.putImage(twoDeck_1.getImage());
+            content.putImage(source.getImage());
             db.setContent(content);
 
             event.consume();
         });
 
-       cell[1][1].setOnDragOver(event -> {
-            /* data is dragged over the target */
-            System.out.println("onDragOver");
+        for (int i = 0; i < targets.length; i++) {
+            for (int j = 0; j < targets[i].length; j++) {
+                Label target = targets[i][j];
 
-            /* accept it only if it is  not dragged from the same node
-             * and if it has a string data */
-            if (event.getGestureSource() != cell[1][1] &&
-                    event.getDragboard().hasString()) {
-                /* allow for both copying and moving, whatever user chooses */
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                target.setOnDragOver(new EventHandler <DragEvent>() {
+                    public void handle(DragEvent event) {
+                        /* data is dragged over the target */
+                        System.out.println("onDragOver");
+
+                        /* accept it only if it is  not dragged from the same node
+                         * and if it has a string data */
+                        if (event.getGestureSource() != target &&
+                                event.getDragboard().hasImage()) {
+                            /* allow for both copying and moving, whatever user chooses */
+                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        }
+
+                        event.consume();
+                    }
+                });
+
+                target.setOnDragDropped(event -> {
+                    /* data dropped */
+                    System.out.println("onDragDropped");
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasImage()) {
+                        target.setGraphic(new ImageView(db.getImage()));
+                        success = true;
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                });
+
+                source.setOnDragDone(event -> {
+                    /* the drag-and-drop gesture ended */
+                    System.out.println("onDragDone");
+                    /* if the data was successfully moved, clear it */
+                    if (event.getTransferMode() == TransferMode.MOVE) {
+                        source.setImage(emptyImage.getImage());
+                    }
+
+                    event.consume();
+                });
             }
-
-            event.consume();
-        });
-
-        cell[1][1].setOnDragEntered(event -> {
-            /* the drag-and-drop gesture entered the target */
-            System.out.println("onDragEntered");
-            /* show to the user that it is an actual gesture target */
-            if (event.getGestureSource() != cell[1][1] &&
-                    event.getDragboard().hasString()) {
-                cell[1][1].setGraphic(twoDeck_1);
-            }
-
-            event.consume();
-        });
-
-        cell[1][1].setOnDragExited(new EventHandler <DragEvent>() {
-            public void handle(DragEvent event) {
-                /* mouse moved away, remove the graphical cues */
-                cell[1][1].setGraphic(twoDeck_1);
-
-                event.consume();
-            }
-        });
-
-        twoDeck_1.setOnDragDropped(new EventHandler <DragEvent>() {
-            public void handle(DragEvent event) {
-                /* data dropped */
-                System.out.println("onDragDropped");
-                /* if there is a string data on dragboard, read it and use it */
-                Dragboard db = event.getDragboard();
-                boolean success = false;
-                if (db.hasString()) {
-                    twoDeck_1.setImage(db.getImage());
-                    success = true;
-                }
-                /* let the source know whether the string was successfully
-                 * transferred and used */
-                event.setDropCompleted(success);
-
-                event.consume();
-            }
-        });
+        }
 
     }
 

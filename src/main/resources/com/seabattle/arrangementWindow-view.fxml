@@ -118,6 +118,7 @@
                   <Image url="@Ship_4x1_H.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="emptyImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>
