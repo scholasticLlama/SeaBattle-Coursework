@@ -85,7 +85,6 @@ public class HelloDragAndDrop extends Application {
                 event.consume();
             }
         });
-
         target.setOnDragDropped(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
                 /* data dropped */

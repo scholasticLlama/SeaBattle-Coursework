@@ -98,7 +98,7 @@
                   <Image url="@Ship_2x1_H.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="twoDeck_1" fitHeight="30.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+            <ImageView fx:id="twoDeck_1" fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                <image>
                   <Image url="@Ship_2x1_H.png" />
                </image>
@@ -118,6 +118,7 @@
                   <Image url="@Ship_4x1_H.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="emptyImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>

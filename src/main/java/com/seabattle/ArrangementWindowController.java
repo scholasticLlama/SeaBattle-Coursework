@@ -1,21 +1,18 @@
 package com.seabattle;
 
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 
 public class ArrangementWindowController {
 
@@ -86,6 +83,7 @@ public class ArrangementWindowController {
                 myField.add(cell[i][j], j, i);
             }
         }
+
         HashMap<Integer, ImageView[]> ships = new HashMap<>();
         ships.put(1, new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4});
         ships.put(2, new ImageView[] {twoDeck_1, twoDeck_2, twoDeck_3});
@@ -104,7 +102,10 @@ public class ArrangementWindowController {
         }
     }
 
+
+
     void  putShip(ImageView source, Label[][] targets) {
+        int amountOfDecks = (int) source.getFitWidth() / 30;
         source.setOnDragDetected(event -> {
             /* drag was detected, start drag-and-drop gesture*/
             System.out.println("onDragDetected");
@@ -124,21 +125,19 @@ public class ArrangementWindowController {
             for (int j = 0; j < targets[i].length; j++) {
                 Label target = targets[i][j];
 
-                target.setOnDragOver(new EventHandler <DragEvent>() {
-                    public void handle(DragEvent event) {
-                        /* data is dragged over the target */
-                        System.out.println("onDragOver");
+                target.setOnDragOver(event -> {
+                    /* data is dragged over the target */
+                    System.out.println("onDragOver");
 
-                        /* accept it only if it is  not dragged from the same node
-                         * and if it has a string data */
-                        if (event.getGestureSource() != target &&
-                                event.getDragboard().hasImage()) {
-                            /* allow for both copying and moving, whatever user chooses */
-                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        }
-
-                        event.consume();
+                    /* accept it only if it is  not dragged from the same node
+                     * and if it has a string data */
+                    if (event.getGestureSource() != target &&
+                            event.getDragboard().hasImage()) {
+                        /* allow for both copying and moving, whatever user chooses */
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                     }
+
+                    event.consume();
                 });
 
                 target.setOnDragDropped(event -> {
@@ -147,7 +146,7 @@ public class ArrangementWindowController {
                     /* if there is a string data on dragboard, read it and use it */
                     Dragboard db = event.getDragboard();
                     boolean success = false;
-                    if (db.hasImage()) {
+                    if (db.hasImage() && target.getGraphic() == null) {
                         target.setGraphic(new ImageView(db.getImage()));
                         success = true;
                     }
