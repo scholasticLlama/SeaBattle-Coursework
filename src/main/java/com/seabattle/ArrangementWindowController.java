@@ -2,17 +2,18 @@ package com.seabattle;
 
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class ArrangementWindowController {
 
@@ -83,7 +84,6 @@ public class ArrangementWindowController {
                 myField.add(cell[i][j], j, i);
             }
         }
-
         HashMap<Integer, ImageView[]> ships = new HashMap<>();
         ships.put(1, new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4});
         ships.put(2, new ImageView[] {twoDeck_1, twoDeck_2, twoDeck_3});
@@ -96,16 +96,9 @@ public class ArrangementWindowController {
                 putShip(value[j], cell);
             }
         }
-        ImageView[] images = new ImageView[] {oneDeck_1, twoDeck_1, threeDeck_1, fourDeck};
-        for (int i = 0; i < images.length; i++) {
-            putShip(images[i], cell);
-        }
     }
 
-
-
     void  putShip(ImageView source, Label[][] targets) {
-        int amountOfDecks = (int) source.getFitWidth() / 30;
         source.setOnDragDetected(event -> {
             /* drag was detected, start drag-and-drop gesture*/
             System.out.println("onDragDetected");
@@ -124,6 +117,13 @@ public class ArrangementWindowController {
         for (int i = 0; i < targets.length; i++) {
             for (int j = 0; j < targets[i].length; j++) {
                 Label target = targets[i][j];
+                Label[] possibleTargets = new Label[] {null, null, null};
+
+                for (int k = 0; k < possibleTargets.length; k++) {
+                    if (j + k + 1 < targets[i].length) {
+                        possibleTargets[k] = targets[i][j + k + 1];
+                    }
+                }
 
                 target.setOnDragOver(event -> {
                     /* data is dragged over the target */
@@ -140,6 +140,7 @@ public class ArrangementWindowController {
                     event.consume();
                 });
 
+
                 target.setOnDragDropped(event -> {
                     /* data dropped */
                     System.out.println("onDragDropped");
@@ -147,8 +148,28 @@ public class ArrangementWindowController {
                     Dragboard db = event.getDragboard();
                     boolean success = false;
                     if (db.hasImage() && target.getGraphic() == null) {
-                        target.setGraphic(new ImageView(db.getImage()));
-                        success = true;
+                        ImageView object = (ImageView) event.getGestureSource();
+                        int amountOfDecks = (int) object.getFitWidth() / 30;
+                        for (int m = possibleTargets.length - 1; m >= 3 - (possibleTargets.length + 1 - amountOfDecks); m--) {
+                            possibleTargets[m] = null;
+                        }
+
+                        int count = 1;
+
+                        for (Label possibleTarget : possibleTargets) {
+                            if (possibleTarget != null) {
+                                count++;
+                            }
+                        }
+
+                        if (amountOfDecks == count) {
+                            for (int l = 0; l < count - 1; l++) {
+                                possibleTargets[l].setGraphic(new ImageView(emptyImage.getImage()));
+                            }
+                            target.setGraphic(new ImageView(db.getImage()));
+                            success = true;
+                        }
+
                     }
                     /* let the source know whether the string was successfully
                      * transferred and used */
