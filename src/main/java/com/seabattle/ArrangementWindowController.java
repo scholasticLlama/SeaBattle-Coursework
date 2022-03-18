@@ -1,19 +1,21 @@
 package com.seabattle;
 
-import java.net.URL;
-import java.util.*;
-
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
+
+import java.io.File;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class ArrangementWindowController {
 
@@ -76,6 +78,7 @@ public class ArrangementWindowController {
 
     @FXML
     void initialize() {
+        Audio clickButton = new Audio("src/main/resources/com/seabattle/ClickButton.wav", 0.9);
         Label[][] cell = new Label[10][10];
         for (int i = 0; i < myField.getRowCount(); i++) {
             for (int j = 0; j < myField.getColumnCount(); j++) {
@@ -96,13 +99,31 @@ public class ArrangementWindowController {
                 putShip(value[j], cell);
             }
         }
+
+        startGameButton.setOnAction(event -> {
+            clickButton.sound();
+            clickButton.setVolume();
+        });
+
+//        Change images to 0 and 1
+//        randomShipPlaceButton.setOnAction(event -> {
+//            ObservableList<Node> label = myField.getChildren();
+//            int countRow = 1;
+//            for (Node node : label) {
+//                Label l = (Label) node;
+//                if (l.getGraphic() != null) {
+//                    System.out.print("1");
+//                } else System.out.print("0");
+//                if (countRow % 10 == 0) {
+//                    System.out.println();
+//                }
+//                countRow++;
+//            }
+//        });
     }
 
     void  putShip(ImageView source, Label[][] targets) {
         source.setOnDragDetected(event -> {
-            /* drag was detected, start drag-and-drop gesture*/
-            System.out.println("onDragDetected");
-
             /* allow any transfer mode */
             Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 
@@ -118,6 +139,7 @@ public class ArrangementWindowController {
             for (int j = 0; j < targets[i].length; j++) {
                 Label target = targets[i][j];
                 Label[] possibleTargets = new Label[] {null, null, null};
+                Label[][]  fullCells = new Label[][] {{null, null, null, null, null, null}, {null, null, null, null, null, null}, {null, null, null, null, null, null}};
 
                 for (int k = 0; k < possibleTargets.length; k++) {
                     if (j + k + 1 < targets[i].length) {
@@ -125,10 +147,25 @@ public class ArrangementWindowController {
                     }
                 }
 
-                target.setOnDragOver(event -> {
-                    /* data is dragged over the target */
-                    System.out.println("onDragOver");
+                for (int l = 0; l < fullCells.length; l ++) {
+                    for (int k = 0; k < fullCells[l].length; k++) {
+                        if (j + k - 1 < targets[i].length && i + l - 1 < targets.length) {
+                            if (i != 0 && j != 0) {
+                                fullCells[l][k] =  targets[i - 1 + l][j - 1 + k];
+                            } else {
+                                if (i == 0 && l != 0 && j != 0)
+                                    fullCells[l][k] =  targets[l - 1][j - 1 + k];
+                                if (j == 0 && k != 0 && i != 0)
+                                    fullCells[l][k] =  targets[i - 1 + l][k - 1];
+                                if (i == 0 && j == 0 && l != 0 && k != 0)
+                                    fullCells[l][k] =  targets[i + l - 1][j + k - 1];
+                            }
 
+                        }
+                    }
+                }
+
+                target.setOnDragOver(event -> {
                     /* accept it only if it is  not dragged from the same node
                      * and if it has a string data */
                     if (event.getGestureSource() != target &&
@@ -140,35 +177,53 @@ public class ArrangementWindowController {
                     event.consume();
                 });
 
-
                 target.setOnDragDropped(event -> {
-                    /* data dropped */
-                    System.out.println("onDragDropped");
                     /* if there is a string data on dragboard, read it and use it */
                     Dragboard db = event.getDragboard();
                     boolean success = false;
-                    if (db.hasImage() && target.getGraphic() == null) {
+                    if (db.hasImage() && target.getGraphic() == null && !Objects.equals(target.getText(), "\u200E")) {
                         ImageView object = (ImageView) event.getGestureSource();
                         int amountOfDecks = (int) object.getFitWidth() / 30;
+
                         for (int m = possibleTargets.length - 1; m >= 3 - (possibleTargets.length + 1 - amountOfDecks); m--) {
                             possibleTargets[m] = null;
                         }
 
-                        int count = 1;
 
+                        int count = 1;
+                        int countEmpty = 1;
                         for (Label possibleTarget : possibleTargets) {
                             if (possibleTarget != null) {
+                                if (!Objects.equals(possibleTarget.getText(), "\u200E")) {
+                                    countEmpty++;
+                                }
                                 count++;
                             }
                         }
 
-                        if (amountOfDecks == count) {
+
+                        if (amountOfDecks == count && amountOfDecks == countEmpty) {
+                            for (int k = 0; k < amountOfDecks + 2; k ++) {
+                                if (fullCells[0][k] != null) {
+                                    fullCells[0][k].setText("\u200E");
+                                }
+                                if (fullCells[1][k] != null) {
+                                    fullCells[1][k].setText("\u200E");
+                                }
+                                if (fullCells[2][k] != null) {
+                                    fullCells[2][k].setText("\u200E");
+                                }
+
+                            }
+
                             for (int l = 0; l < count - 1; l++) {
                                 possibleTargets[l].setGraphic(new ImageView(emptyImage.getImage()));
                             }
                             target.setGraphic(new ImageView(db.getImage()));
                             success = true;
+
                         }
+
 
                     }
                     /* let the source know whether the string was successfully
@@ -179,8 +234,6 @@ public class ArrangementWindowController {
                 });
 
                 source.setOnDragDone(event -> {
-                    /* the drag-and-drop gesture ended */
-                    System.out.println("onDragDone");
                     /* if the data was successfully moved, clear it */
                     if (event.getTransferMode() == TransferMode.MOVE) {
                         source.setImage(emptyImage.getImage());
