@@ -2,6 +2,7 @@ package com.seabattle;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -15,11 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
-import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ArrangementWindowController {
 
@@ -80,6 +78,8 @@ public class ArrangementWindowController {
     @FXML
     private ImageView twoDeck_3;
 
+    private int amountOfDecks;
+
     @FXML
     void initialize() {
         Audio clickButton = new Audio("src/main/resources/com/seabattle/ClickButton.wav", 0.9);
@@ -127,6 +127,9 @@ public class ArrangementWindowController {
     }
 
     void  putShip(ImageView source, Label[][] targets) {
+        Image possibleCellImage = new Image(Objects.requireNonNull(getClass().getResource("PossibleCell.png")).toExternalForm());
+        Image impossibleCellImage = new Image(Objects.requireNonNull(getClass().getResource("ImpossibleCell.png")).toExternalForm());
+
         source.setOnDragDetected(event -> {
             /* allow any transfer mode */
             Dragboard db = source.startDragAndDrop(TransferMode.ANY);
@@ -172,6 +175,8 @@ public class ArrangementWindowController {
                 target.setOnDragOver(event -> {
                     /* accept it only if it is  not dragged from the same node
                      * and if it has a string data */
+                    ImageView object = (ImageView) event.getGestureSource();
+                    this.amountOfDecks = (int) object.getFitWidth() / 30;
                     if (event.getGestureSource() != target &&
                             event.getDragboard().hasImage()) {
                         /* allow for both copying and moving, whatever user chooses */
@@ -181,15 +186,71 @@ public class ArrangementWindowController {
                     event.consume();
                 });
 
+                target.setOnDragEntered(event -> {
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != target &&
+                            event.getDragboard().hasImage()) {
+                        for (int k = 0; k < this.amountOfDecks + 2; k ++) {
+                            if (fullCells[0][k] != null) {
+                                if (Objects.equals(fullCells[0][k].getText(), "\u200E") && fullCells[0][k].getGraphic() == null) {
+                                    fullCells[0][k].setGraphic(new ImageView(impossibleCellImage));
+                                } else if (fullCells[0][k].getGraphic() == null)
+                                    fullCells[0][k].setGraphic(new ImageView(possibleCellImage));
+                            }
+                            if (fullCells[1][k] != null) {
+                                if (Objects.equals(fullCells[1][k].getText(), "\u200E") && fullCells[1][k].getGraphic() == null) {
+                                    fullCells[1][k].setGraphic(new ImageView(impossibleCellImage));
+                                } else if (fullCells[1][k].getGraphic() == null)
+                                    fullCells[1][k].setGraphic(new ImageView(possibleCellImage));
+                            }
+                            if (fullCells[2][k] != null) {
+                                if (Objects.equals(fullCells[2][k].getText(), "\u200E") && fullCells[2][k].getGraphic() == null) {
+                                    fullCells[2][k].setGraphic(new ImageView(impossibleCellImage));
+                                } else if (fullCells[2][k].getGraphic() == null)
+                                    fullCells[2][k].setGraphic(new ImageView(possibleCellImage));
+                            }
+                        }
+                    }
+
+                    event.consume();
+                });
+
+                target.setOnDragExited(event -> {
+                    /* mouse moved away, remove the graphical cues */
+                    for (int k = 0; k < this.amountOfDecks + 2; k ++) {
+                        if (fullCells[0][k] != null) {
+                            ImageView a = (ImageView) fullCells[0][k].getGraphic();
+                            if (a != null && (a.getImage() == possibleCellImage || a.getImage() == impossibleCellImage))
+                                fullCells[0][k].setGraphic(null);
+                        }
+                        if (fullCells[1][k] != null) {
+                            ImageView a = (ImageView) fullCells[1][k].getGraphic();
+                            if (a != null && (a.getImage() == possibleCellImage || a.getImage() == impossibleCellImage))
+                                fullCells[1][k].setGraphic(null);
+                        }
+                        if (fullCells[2][k] != null) {
+                            ImageView a = (ImageView) fullCells[2][k].getGraphic();
+                            if (a != null && (a.getImage() == possibleCellImage || a.getImage() == impossibleCellImage))
+                                fullCells[2][k].setGraphic(null);
+                        }
+
+                    }
+
+                    event.consume();
+                });
+
                 target.setOnDragDropped(event -> {
                     /* if there is a string data on dragboard, read it and use it */
                     Dragboard db = event.getDragboard();
                     boolean success = false;
-                    if (db.hasImage() && target.getGraphic() == null && !Objects.equals(target.getText(), "\u200E")) {
-                        ImageView object = (ImageView) event.getGestureSource();
-                        int amountOfDecks = (int) object.getFitWidth() / 30;
-
-                        for (int m = possibleTargets.length - 1; m >= 3 - (possibleTargets.length + 1 - amountOfDecks); m--) {
+                    ImageView imageView = (ImageView) target.getGraphic();
+                    Set<Image> images = new HashSet<>();
+                    images.add(null);
+                    images.add(possibleCellImage);
+                    images.add(impossibleCellImage);
+                    boolean a = images.contains(imageView.getImage());
+                    if (db.hasImage() && a && !Objects.equals(target.getText(), "\u200E")) {
+                        for (int m = possibleTargets.length - 1; m >= 3 - (possibleTargets.length + 1 - this.amountOfDecks); m--) {
                             possibleTargets[m] = null;
                         }
 
@@ -205,9 +266,8 @@ public class ArrangementWindowController {
                             }
                         }
 
-
-                        if (amountOfDecks == count && amountOfDecks == countEmpty) {
-                            for (int k = 0; k < amountOfDecks + 2; k ++) {
+                        if (this.amountOfDecks == count && this.amountOfDecks == countEmpty) {
+                            for (int k = 0; k < this.amountOfDecks + 2; k ++) {
                                 if (fullCells[0][k] != null) {
                                     fullCells[0][k].setText("\u200E");
                                 }
