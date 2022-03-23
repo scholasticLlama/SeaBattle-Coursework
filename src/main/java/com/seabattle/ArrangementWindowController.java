@@ -1,21 +1,24 @@
 package com.seabattle;
 
-import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -28,13 +31,22 @@ public class ArrangementWindowController {
     private URL location;
 
     @FXML
+    private Label closeWindowButton;
+
+    @FXML
+    private ImageView emptyImage;
+
+    @FXML
     private ImageView fourDeck;
 
     @FXML
     private AnchorPane mainPane;
 
     @FXML
-    private HBox menuBar;
+    private AnchorPane menuBar;
+
+    @FXML
+    private Label minimizeWindowButton;
 
     @FXML
     private GridPane myField;
@@ -50,9 +62,6 @@ public class ArrangementWindowController {
 
     @FXML
     private ImageView oneDeck_4;
-
-    @FXML
-    private ImageView emptyImage;
 
     @FXML
     private Button randomShipPlaceButton;
@@ -79,10 +88,73 @@ public class ArrangementWindowController {
     private ImageView twoDeck_3;
 
     private int amountOfDecks;
+    private int mouseClickRotate;
+    private double x;
+    private double y;
+    private double xOffset;
+    private  double yOffset;
+    private boolean isPossibleToDrag;
 
     @FXML
     void initialize() {
         Audio clickButton = new Audio("src/main/resources/com/seabattle/ClickButton.wav", 0.9);
+
+        // close window
+        closeWindowButton.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                Stage stage = (Stage) closeWindowButton.getScene().getWindow();
+                stage.close();
+            }
+        });
+
+        // minimize window
+        minimizeWindowButton.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                Stage stage = (Stage) minimizeWindowButton.getScene().getWindow();
+                stage.setIconified(true);
+            }
+        });
+
+        // window dragging
+        menuBar.setOnMousePressed(event -> {
+            xOffset = event.getX();
+            yOffset = event.getY();
+            isPossibleToDrag = !(closeWindowButton.isHover() | minimizeWindowButton.isHover());
+        });
+
+        menuBar.setOnMouseDragged(event -> {
+            x = event.getScreenX();
+            y = event.getScreenY();
+            if (event.getButton() == MouseButton.PRIMARY && isPossibleToDrag) {
+                Stage stage = (Stage) menuBar.getScene().getWindow();
+                stage.setX(x - xOffset);
+                stage.setY(y - yOffset);
+            }
+        });
+
+        // start game
+        startGameButton.setOnAction(event -> {
+            clickButton.sound();
+            clickButton.setVolume();
+            Stage gameStage = new Stage();
+            Stage stage = (Stage) startGameButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(ArrangementWindowController.class.getResource("mainWindow-view.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(loader.load(), 720, 420);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            gameStage.setTitle("Sea Battle");
+            gameStage.initStyle(StageStyle.UNDECORATED);
+            gameStage.setX(stage.getX());
+            gameStage.setY(stage.getY());
+
+            gameStage.setScene(scene);
+            gameStage.show();
+            stage.hide();
+        });
+
         Label[][] cell = new Label[10][10];
         for (int i = 0; i < myField.getRowCount(); i++) {
             for (int j = 0; j < myField.getColumnCount(); j++) {
@@ -99,15 +171,11 @@ public class ArrangementWindowController {
         for(int i = 1; i <= ships.size(); i++) {
             //Integer key = entry.getKey();
             ImageView[] value = ships.get(i);
-            for (int j = 0; j < value.length; j++) {
-                putShip(value[j], cell);
+            for (ImageView imageView : value) {
+                putShip(imageView, cell);
             }
         }
 
-        startGameButton.setOnAction(event -> {
-            clickButton.sound();
-            clickButton.setVolume();
-        });
 
 //        Change images to 0 and 1
 //        randomShipPlaceButton.setOnAction(event -> {
@@ -250,10 +318,10 @@ public class ArrangementWindowController {
                     images.add(impossibleCellImage);
                     boolean a = images.contains(imageView.getImage());
                     if (db.hasImage() && a && !Objects.equals(target.getText(), "\u200E")) {
+
                         for (int m = possibleTargets.length - 1; m >= 3 - (possibleTargets.length + 1 - this.amountOfDecks); m--) {
                             possibleTargets[m] = null;
                         }
-
 
                         int count = 1;
                         int countEmpty = 1;
@@ -288,7 +356,6 @@ public class ArrangementWindowController {
 
                         }
 
-
                     }
                     /* let the source know whether the string was successfully
                      * transferred and used */
@@ -302,12 +369,23 @@ public class ArrangementWindowController {
                     if (event.getTransferMode() == TransferMode.MOVE) {
                         source.setImage(emptyImage.getImage());
                     }
-
                     event.consume();
                 });
             }
         }
 
     }
+
+//    void rotateShip(Label ship) {
+//        mouseClickRotate = 0;
+//        ship.setOnMouseClicked(event -> {
+//            if (mouseClickRotate % 2 == 0) {
+//                ship.setRotate(-90);
+//            } else {
+//                ship.setRotate(0);
+//            }
+//            mouseClickRotate++;
+//        });
+//    }
 
 }

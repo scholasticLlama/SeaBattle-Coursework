@@ -3,6 +3,7 @@ package com.seabattle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -12,7 +13,7 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("arrangementWindow-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 420);
         stage.setTitle("SeaBattle");
-        stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show();
     }
