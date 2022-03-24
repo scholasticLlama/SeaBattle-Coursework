@@ -141,7 +141,7 @@ public class MainWindowController {
                         label.setText(null);
                         label.setGraphic(new ImageView(hitShip));
                         label.setOpacity(1);
-                    } else {
+                    } else if (Objects.equals(label.getText(), "0")) {
                         label.setText(null);
                         label.setGraphic(new ImageView(emptyCell));
                         label.setOpacity(1);
