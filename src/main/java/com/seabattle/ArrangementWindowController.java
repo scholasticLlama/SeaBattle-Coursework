@@ -18,6 +18,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -49,7 +52,7 @@ public class ArrangementWindowController {
     private Label minimizeWindowButton;
 
     @FXML
-    private GridPane myField;
+    public GridPane myField;
 
     @FXML
     private ImageView oneDeck_1;
@@ -94,6 +97,7 @@ public class ArrangementWindowController {
     private double xOffset;
     private  double yOffset;
     private boolean isPossibleToDrag;
+    public int[] out = new int[100];
 
     @FXML
     void initialize() {
@@ -132,8 +136,15 @@ public class ArrangementWindowController {
             }
         });
 
+
+
         // start game
         startGameButton.setOnAction(event -> {
+            try {
+                myFieldToLabel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             clickButton.sound();
             clickButton.setVolume();
             Stage gameStage = new Stage();
@@ -177,21 +188,25 @@ public class ArrangementWindowController {
         }
 
 
-//        Change images to 0 and 1
-//        randomShipPlaceButton.setOnAction(event -> {
-//            ObservableList<Node> label = myField.getChildren();
-//            int countRow = 1;
-//            for (Node node : label) {
-//                Label l = (Label) node;
-//                if (l.getGraphic() != null) {
-//                    System.out.print("1");
-//                } else System.out.print("0");
-//                if (countRow % 10 == 0) {
-//                    System.out.println();
-//                }
-//                countRow++;
-//            }
-//        });
+    }
+
+    void myFieldToLabel() throws IOException {
+        int index = 0;
+        ObservableList<Node> label = myField.getChildren();
+        for (Node node : label) {
+            Label l = (Label) node;
+            if (l.getGraphic() != null) {
+                out[index] = 1;
+            } else {
+                out[index] = 0;
+            }
+            index++;
+        }
+        FileOutputStream file = new FileOutputStream("src/main/resources/com/seabattle/fieldInArray");
+        for (int i : out) {
+            file.write(i);
+        }
+        file.close();
     }
 
     void  putShip(ImageView source, Label[][] targets) {
