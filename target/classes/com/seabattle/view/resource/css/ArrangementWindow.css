@@ -1,0 +1,40 @@
+.anchorPane {
+    -fx-background-image: url("../photo/ArrangementBackground.png");
+}
+
+.startGame {
+    -fx-background-image: url("../photo/StartGame.png");
+}
+
+.randomShipPlace {
+    -fx-background-image: url("../photo/RandomShipPlace.png");
+}
+
+.startGame:hover {
+    -fx-background-image: url("../photo/StartGameHover.png");
+}
+
+.randomShipPlace:hover {
+    -fx-background-image: url("../photo/RandomShipPlaceHover.png");
+}
+
+.startGame:pressed {
+    -fx-background-image: url("../photo/StartGamePressed.png");
+}
+
+.randomShipPlace:pressed {
+    -fx-background-image: url("../photo/RandomShipPlacePressed.png");
+}
+
+.exitButton:hover,
+.minimizeButton:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-background-radius: 5;
+    -fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 0.0%, #7ee8ecff 0.0%, #4a4ae3ff 100.0%);
+}
+
+.exitIcon:hover,
+.minimizeIcon:hover {
+    -fx-icon-color: #ffffff;
+}
