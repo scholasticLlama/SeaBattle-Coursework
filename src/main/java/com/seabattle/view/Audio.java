@@ -1,4 +1,4 @@
-package com.seabattle;
+package com.seabattle.view;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class Audio {
     }
 
     public void sound() {
-        File f = new File(this.track);
+        File f = new File(track);
         AudioInputStream tr = null;
         try {
             tr = AudioSystem.getAudioInputStream(f);

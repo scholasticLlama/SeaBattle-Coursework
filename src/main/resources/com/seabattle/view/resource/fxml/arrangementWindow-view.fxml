@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="720.0" styleClass="anchorPane" stylesheets="@ArrangementWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.ArrangementWindowController">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="720.0" styleClass="anchorPane" stylesheets="@../css/ArrangementWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.controller.ArrangementWindowController">
    <children>
       <GridPane fx:id="myField" layoutX="30.0" layoutY="90.0" prefHeight="300.0" prefWidth="300.0">
         <columnConstraints>
@@ -39,15 +39,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button fx:id="randomShipPlaceButton" layoutX="360.0" layoutY="330.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" styleClass="randomShipPlace" stylesheets="@ArrangementWindow.css">
+      <Button fx:id="randomShipPlaceButton" layoutX="360.0" layoutY="330.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" styleClass="randomShipPlace" stylesheets="@../css/ArrangementWindow.css">
          <effect>
             <DropShadow blurType="GAUSSIAN" />
          </effect></Button>
-      <Button fx:id="startGameButton" layoutX="540.0" layoutY="330.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="150.0" styleClass="startGame" stylesheets="@ArrangementWindow.css">
+      <Button fx:id="startGameButton" layoutX="540.0" layoutY="330.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="150.0" styleClass="startGame" stylesheets="@../css/ArrangementWindow.css">
          <effect>
             <DropShadow blurType="GAUSSIAN" />
          </effect></Button>
-      <GridPane fx:id="shipField" layoutX="420.0" layoutY="90.0" prefHeight="210.0" prefWidth="240.0" stylesheets="@ArrangementWindow.css">
+      <GridPane fx:id="shipField" layoutX="420.0" layoutY="90.0" prefHeight="210.0" prefWidth="240.0" stylesheets="@../css/ArrangementWindow.css">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -70,65 +70,65 @@
          <children>
             <ImageView fx:id="oneDeck_1" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ship">
                <image>
-                  <Image url="@Ship_1x1_H.png" />
+                  <Image url="@../photo/Ship_1x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="oneDeck_2" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.columnIndex="2">
                <image>
-                  <Image url="@Ship_1x1_H.png" />
+                  <Image url="@../photo/Ship_1x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="oneDeck_3" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.columnIndex="4">
                <image>
-                  <Image url="@Ship_1x1_H.png" />
+                  <Image url="@../photo/Ship_1x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="oneDeck_4" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.columnIndex="6">
                <image>
-                  <Image url="@Ship_1x1_H.png" />
+                  <Image url="@../photo/Ship_1x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="twoDeck_2" fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <image>
-                  <Image url="@Ship_2x1_H.png" />
+                  <Image url="@../photo/Ship_2x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="twoDeck_3" fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.columnIndex="6" GridPane.rowIndex="2">
                <image>
-                  <Image url="@Ship_2x1_H.png" />
+                  <Image url="@../photo/Ship_2x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="twoDeck_1" fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.rowIndex="2">
                <image>
-                  <Image url="@Ship_2x1_H.png" />
+                  <Image url="@../photo/Ship_2x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="threeDeck_1" fitHeight="30.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.rowIndex="4">
                <image>
-                  <Image url="@Ship_3x1_H.png" />
+                  <Image url="@../photo/Ship_3x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="threeDeck_2" fitHeight="30.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.columnIndex="4" GridPane.rowIndex="4">
                <image>
-                  <Image url="@Ship_3x1_H.png" />
+                  <Image url="@../photo/Ship_3x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="fourDeck" fitHeight="30.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="ship" GridPane.rowIndex="6">
                <image>
-                  <Image url="@Ship_4x1_H.png" />
+                  <Image url="@../photo/Ship_4x1_H.png" />
                </image>
             </ImageView>
             <ImageView fx:id="emptyImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="6" />
          </children>
       </GridPane>
-      <AnchorPane fx:id="menuBar" prefHeight="60.0" prefWidth="720.0" stylesheets="@ArrangementWindow.css">
+      <AnchorPane fx:id="menuBar" prefHeight="60.0" prefWidth="720.0" stylesheets="@../css/ArrangementWindow.css">
          <children>
-            <Label fx:id="closeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="665.0" layoutY="10.0" styleClass="exitButton" stylesheets="@ArrangementWindow.css">
+            <Label fx:id="closeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="665.0" layoutY="10.0" styleClass="exitButton" stylesheets="@../css/ArrangementWindow.css">
                <graphic>
                   <FontIcon iconLiteral="bx-exit" iconSize="40" styleClass="exitIcon" />
                </graphic>
             </Label>
-            <Label fx:id="minimizeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="615.0" layoutY="10.0" styleClass="minimizeButton" stylesheets="@ArrangementWindow.css">
+            <Label fx:id="minimizeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="615.0" layoutY="10.0" styleClass="minimizeButton" stylesheets="@../css/ArrangementWindow.css">
                <graphic>
                   <FontIcon iconLiteral="bx-no-entry" iconSize="40" styleClass="minimizeIcon" />
                </graphic>

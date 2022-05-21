@@ -1,29 +1,29 @@
 .anchorPane {
-    -fx-background-image: url("ArrangementBackground.png");
+    -fx-background-image: url("../photo/ArrangementBackground.png");
 }
 
 .startGame {
-    -fx-background-image: url("StartGame.png");
+    -fx-background-image: url("../photo/StartGame.png");
 }
 
 .randomShipPlace {
-    -fx-background-image: url("RandomShipPlace.png");
+    -fx-background-image: url("../photo/RandomShipPlace.png");
 }
 
 .startGame:hover {
-    -fx-background-image: url("StartGameHover.png");
+    -fx-background-image: url("../photo/StartGameHover.png");
 }
 
 .randomShipPlace:hover {
-    -fx-background-image: url("RandomShipPlaceHover.png");
+    -fx-background-image: url("../photo/RandomShipPlaceHover.png");
 }
 
 .startGame:pressed {
-    -fx-background-image: url("StartGamePressed.png");
+    -fx-background-image: url("../photo/StartGamePressed.png");
 }
 
 .randomShipPlace:pressed {
-    -fx-background-image: url("RandomShipPlacePressed.png");
+    -fx-background-image: url("../photo/RandomShipPlacePressed.png");
 }
 
 .exitButton:hover,

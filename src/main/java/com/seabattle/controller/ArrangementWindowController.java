@@ -1,5 +1,8 @@
-package com.seabattle;
+package com.seabattle.controller;
 
+import com.seabattle.view.Application;
+import com.seabattle.view.Audio;
+import com.seabattle.view.WindowControlManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,18 +14,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class ArrangementWindowController {
@@ -91,65 +94,29 @@ public class ArrangementWindowController {
     private ImageView twoDeck_3;
 
     private int amountOfDecks;
-    private int mouseClickRotate;
-    private double x;
-    private double y;
-    private double xOffset;
-    private  double yOffset;
-    private boolean isPossibleToDrag;
     public int[] out = new int[100];
 
     @FXML
-    void initialize() {
-        Audio clickButton = new Audio("src/main/resources/com/seabattle/ClickButton.wav", 0.9);
+    void initialize() throws URISyntaxException {
+        URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
+        Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
+        Audio clickButton = new Audio(String.valueOf(pathAudioClickButton), 0.9);
 
-        // close window
-        closeWindowButton.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                Stage stage = (Stage) closeWindowButton.getScene().getWindow();
-                stage.close();
-            }
-        });
-
-        // minimize window
-        minimizeWindowButton.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                Stage stage = (Stage) minimizeWindowButton.getScene().getWindow();
-                stage.setIconified(true);
-            }
-        });
-
-        // window dragging
-        menuBar.setOnMousePressed(event -> {
-            xOffset = event.getX();
-            yOffset = event.getY();
-            isPossibleToDrag = !(closeWindowButton.isHover() | minimizeWindowButton.isHover());
-        });
-
-        menuBar.setOnMouseDragged(event -> {
-            x = event.getScreenX();
-            y = event.getScreenY();
-            if (event.getButton() == MouseButton.PRIMARY && isPossibleToDrag) {
-                Stage stage = (Stage) menuBar.getScene().getWindow();
-                stage.setX(x - xOffset);
-                stage.setY(y - yOffset);
-            }
-        });
-
-
+        WindowControlManager.closeWindow(closeWindowButton);
+        WindowControlManager.minimizeWindow(minimizeWindowButton);
+        WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton);
 
         // start game
         startGameButton.setOnAction(event -> {
+            clickButton.sound();
             try {
                 myFieldToLabel();
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
-            clickButton.sound();
-            clickButton.setVolume();
             Stage gameStage = new Stage();
             Stage stage = (Stage) startGameButton.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(ArrangementWindowController.class.getResource("mainWindow-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(Application.class.getResource("resource/fxml/battleWindow-view.fxml"));
             Scene scene = null;
             try {
                 scene = new Scene(loader.load(), 720, 420);
@@ -190,7 +157,7 @@ public class ArrangementWindowController {
 
     }
 
-    void myFieldToLabel() throws IOException {
+    void myFieldToLabel() throws IOException, URISyntaxException {
         int index = 0;
         ObservableList<Node> label = myField.getChildren();
         for (Node node : label) {
@@ -202,7 +169,9 @@ public class ArrangementWindowController {
             }
             index++;
         }
-        FileOutputStream file = new FileOutputStream("src/main/resources/com/seabattle/fieldInArray");
+        URL urlFileFieldInArray = Application.class.getResource("resource/file/fieldInArray");
+        Path pathFileFieldInArray = Paths.get(Objects.requireNonNull(urlFileFieldInArray).toURI());
+        FileOutputStream file = new FileOutputStream(String.valueOf(pathFileFieldInArray));
         for (int i : out) {
             file.write(i);
         }
@@ -210,8 +179,8 @@ public class ArrangementWindowController {
     }
 
     void  putShip(ImageView source, Label[][] targets) {
-        Image possibleCellImage = new Image(Objects.requireNonNull(getClass().getResource("PossibleCell.png")).toExternalForm());
-        Image impossibleCellImage = new Image(Objects.requireNonNull(getClass().getResource("ImpossibleCell.png")).toExternalForm());
+        Image possibleCellImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/PossibleCell.png")).toExternalForm());
+        Image impossibleCellImage = new Image(Objects.requireNonNull(Objects.requireNonNull(Application.class.getResource("resource/photo/ImpossibleCell.png")).toExternalForm()));
 
         source.setOnDragDetected(event -> {
             /* allow any transfer mode */
@@ -390,17 +359,5 @@ public class ArrangementWindowController {
         }
 
     }
-
-//    void rotateShip(Label ship) {
-//        mouseClickRotate = 0;
-//        ship.setOnMouseClicked(event -> {
-//            if (mouseClickRotate % 2 == 0) {
-//                ship.setRotate(-90);
-//            } else {
-//                ship.setRotate(0);
-//            }
-//            mouseClickRotate++;
-//        });
-//    }
 
 }

@@ -1,4 +1,4 @@
-package com.seabattle;
+package com.seabattle.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("arrangementWindow-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("resource/fxml/arrangementWindow-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 420);
         stage.setTitle("SeaBattle");
         stage.initStyle(StageStyle.UNDECORATED);
