@@ -24,9 +24,7 @@ import java.util.Objects;
 
 public class BattleWindowController {
 
-    private Label[][] enemyShipsLabel = new Label[10][10];
-    private int[][] enemyShips = new int[10][10];
-
+    private final boolean[] turn = new boolean[]{true, false};
     @FXML
     private Label closeWindowButton;
     @FXML
@@ -43,6 +41,8 @@ public class BattleWindowController {
     private GridPane myFieldGrid;
     @FXML
     private ImageView whoseMoveImage;
+    private Label[][] enemyShipsLabel = new Label[10][10];
+    private int[][] enemyShips = new int[10][10];
     private byte[] myField;
     private int myShipCount;
     private int enemyShipCount;
@@ -57,6 +57,8 @@ public class BattleWindowController {
         Image twoShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H.png")).toExternalForm());
         Image threeShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_3x1_H.png")).toExternalForm());
         Image fourShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_4x1_H.png")).toExternalForm());
+        Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
+        whoseMoveImage.setImage(myMoveArrowImage);
 
         Image[] images = new Image[]{oneShipImage, twoShipImage, threeShipImage, fourShipImage};
 
@@ -143,84 +145,106 @@ public class BattleWindowController {
         Image twoDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H_B.png")).toExternalForm());
         Image threeDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_3x1_H_B.png")).toExternalForm());
         Image fourDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_4x1_H_B.png")).toExternalForm());
+        Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
+        Image enemyMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EnemyMoveArrow.png")).toExternalForm());
         Audio emptyCellAudio = new Audio(String.valueOf(getAudioPath("resource/sound/EmptyCell.wav")), 0.9);
         Audio hitShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/HitShip.wav")), 0.9);
         Audio brokenShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/BrokenShip.wav")), 0.9);
         for (int i = 0; i < enemyFieldGrid.getRowCount(); i++) {
             for (int j = 0; j < enemyFieldGrid.getColumnCount(); j++) {
                 enemyShipsLabel[i][j].setOnMouseClicked(event -> {
-                    Label label = (Label) event.getSource();
-                    String labelValue = label.getText();
-                    int row = 0;
-                    int column = 0;
-                    if (label.getText().contains(",")) {
-                        String[] stringShipInfo = label.getText().split(",");
-                        labelValue = stringShipInfo[0];
-                        row = Integer.parseInt(stringShipInfo[1]);
-                        column = Integer.parseInt(stringShipInfo[2]);
+                    if (turn[0]) {
+                        Label label = (Label) event.getSource();
+                        String labelValue = label.getText();
+                        int row = 0;
+                        int column = 0;
+                        if (label.getText().contains(",")) {
+                            String[] stringShipInfo = label.getText().split(",");
+                            labelValue = stringShipInfo[0];
+                            row = Integer.parseInt(stringShipInfo[1]);
+                            column = Integer.parseInt(stringShipInfo[2]);
+                        }
+                        if (Objects.equals(labelValue, "-1")) {
+                            emptyCellAudio.sound();
+                            label.setText(null);
+                            label.setGraphic(new ImageView(emptyCell));
+                            label.setOpacity(1);
+                            turn[0] = false;
+                            turn[1] = true;
+                        } else if (Objects.equals(labelValue, "0")) {
+                            emptyCellAudio.sound();
+                            label.setText(null);
+                            label.setGraphic(new ImageView(emptyCell));
+                            label.setOpacity(1);
+                            turn[0] = false;
+                            turn[1] = true;
+                        } else if (Objects.equals(labelValue, "1")) {
+                            brokenShipAudio.sound();
+                            label.setText(null);
+                            label.setGraphic(new ImageView(oneDeskHit));
+                            label.setOpacity(1);
+                            turn[0] = true;
+                            turn[1] = false;
+                            //setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                        } else if (Objects.equals(labelValue, "2")) {
+                            if (isBroken(label.getText(), enemyShipsLabel)) {
+                                brokenShipAudio.sound();
+                                enemyShipsLabel[row][column + 1].setGraphic(null);
+                                enemyShipsLabel[row][column].setGraphic(new ImageView(twoDeskHit));
+                                setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                            } else {
+                                hitShipAudio.sound();
+                                label.setGraphic(new ImageView(hitShip));
+                            }
+                            label.setText(null);
+                            label.setOpacity(1);
+                            turn[0] = true;
+                            turn[1] = false;
+                        } else if (Objects.equals(labelValue, "3")) {
+                            if (isBroken(label.getText(), enemyShipsLabel)) {
+                                brokenShipAudio.sound();
+                                enemyShipsLabel[row][column + 1].setGraphic(null);
+                                enemyShipsLabel[row][column + 2].setGraphic(null);
+                                enemyShipsLabel[row][column].setGraphic(new ImageView(threeDeskHit));
+                                setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                            } else {
+                                hitShipAudio.sound();
+                                label.setGraphic(new ImageView(hitShip));
+                            }
+                            label.setText(null);
+                            label.setOpacity(1);
+                            turn[0] = true;
+                            turn[1] = false;
+                        } else if (Objects.equals(labelValue, "4")) {
+                            if (isBroken(label.getText(), enemyShipsLabel)) {
+                                brokenShipAudio.sound();
+                                enemyShipsLabel[row][column + 1].setGraphic(null);
+                                enemyShipsLabel[row][column + 2].setGraphic(null);
+                                enemyShipsLabel[row][column + 3].setGraphic(null);
+                                enemyShipsLabel[row][column].setGraphic(new ImageView(fourDeskHit));
+                                setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                            } else {
+                                hitShipAudio.sound();
+                                label.setGraphic(new ImageView(hitShip));
+                            }
+                            label.setText(null);
+                            label.setOpacity(1);
+                            turn[0] = true;
+                            turn[1] = false;
+                        }
                     }
-                    if (Objects.equals(labelValue, "-1")) {
-                        emptyCellAudio.sound();
-                        label.setText(null);
-                        label.setGraphic(new ImageView(emptyCell));
-                        label.setOpacity(1);
-                    } else if (Objects.equals(labelValue, "0")) {
-                        emptyCellAudio.sound();
-                        label.setText(null);
-                        label.setGraphic(new ImageView(emptyCell));
-                        label.setOpacity(1);
-                    } else if (Objects.equals(labelValue, "1")) {
-                        brokenShipAudio.sound();
-                        label.setText(null);
-                        label.setGraphic(new ImageView(oneDeskHit));
-                        label.setOpacity(1);
-                        //setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
-                    } else if (Objects.equals(labelValue, "2")) {
-                        if (isBroken(label.getText(), enemyShipsLabel)) {
-                            brokenShipAudio.sound();
-                            enemyShipsLabel[row][column + 1].setGraphic(null);
-                            enemyShipsLabel[row][column].setGraphic(new ImageView(twoDeskHit));
-                            setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
-                        } else {
-                            hitShipAudio.sound();
-                            label.setGraphic(new ImageView(hitShip));
-                        }
-                        label.setText(null);
-                        label.setOpacity(1);
-                    } else if (Objects.equals(labelValue, "3")) {
-                        if (isBroken(label.getText(), enemyShipsLabel)) {
-                            brokenShipAudio.sound();
-                            enemyShipsLabel[row][column + 1].setGraphic(null);
-                            enemyShipsLabel[row][column + 2].setGraphic(null);
-                            enemyShipsLabel[row][column].setGraphic(new ImageView(threeDeskHit));
-                            setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
-                        } else {
-                            hitShipAudio.sound();
-                            label.setGraphic(new ImageView(hitShip));
-                        }
-                        label.setText(null);
-                        label.setOpacity(1);
-                    } else if (Objects.equals(labelValue, "4")) {
-                        if (isBroken(label.getText(), enemyShipsLabel)) {
-                            brokenShipAudio.sound();
-                            enemyShipsLabel[row][column + 1].setGraphic(null);
-                            enemyShipsLabel[row][column + 2].setGraphic(null);
-                            enemyShipsLabel[row][column + 3].setGraphic(null);
-                            enemyShipsLabel[row][column].setGraphic(new ImageView(fourDeskHit));
-                            setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
-                        } else {
-                            hitShipAudio.sound();
-                            label.setGraphic(new ImageView(hitShip));
-                        }
-                        label.setText(null);
-                        label.setOpacity(1);
+
+                    if (turn[0]) {
+                        whoseMoveImage.setImage(myMoveArrowImage);
+                    } else {
+                        whoseMoveImage.setImage(enemyMoveArrowImage);
                     }
                 });
 
                 enemyFieldGrid.add(enemyShipsLabel[i][j], j, i);
             }
         }
-}
+    }
 
     private boolean isBroken(String stringShipInfo, Label[][] enemyShipsLabel) {
         String[] shipInfo = stringShipInfo.split(",");
