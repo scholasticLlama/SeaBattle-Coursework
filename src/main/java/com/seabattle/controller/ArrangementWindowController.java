@@ -1,6 +1,5 @@
 package com.seabattle.controller;
 
-import com.seabattle.model.CreateField;
 import com.seabattle.view.Application;
 import com.seabattle.view.Audio;
 import com.seabattle.view.WindowControlManager;
@@ -21,7 +20,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,70 +32,49 @@ import java.util.*;
 public class ArrangementWindowController {
 
     @FXML
+    public GridPane myField;
+    public int[] out = new int[100];
+    @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Label closeWindowButton;
-
     @FXML
     private ImageView emptyImage;
-
     @FXML
     private ImageView fourDeck;
-
     @FXML
     private AnchorPane mainPane;
-
     @FXML
     private AnchorPane menuBar;
-
     @FXML
     private Label minimizeWindowButton;
-
-    @FXML
-    public GridPane myField;
-
     @FXML
     private ImageView oneDeck_1;
-
     @FXML
     private ImageView oneDeck_2;
-
     @FXML
     private ImageView oneDeck_3;
-
     @FXML
     private ImageView oneDeck_4;
-
     @FXML
     private Button randomShipPlaceButton;
-
     @FXML
     private GridPane shipField;
-
     @FXML
     private Button startGameButton;
-
     @FXML
     private ImageView threeDeck_1;
-
     @FXML
     private ImageView threeDeck_2;
-
     @FXML
     private ImageView twoDeck_1;
-
     @FXML
     private ImageView twoDeck_2;
-
     @FXML
     private ImageView twoDeck_3;
-
     private int amountOfDecks;
-    public int[] out = new int[100];
 
     @FXML
     void initialize() throws URISyntaxException {
@@ -133,22 +112,22 @@ public class ArrangementWindowController {
             gameStage.show();
             stage.hide();
         });
-        ImageView[] imageViews = new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4, twoDeck_1, twoDeck_2, twoDeck_3, threeDeck_1, threeDeck_2, fourDeck};
+        ImageView[] imageViews = new ImageView[]{oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4, twoDeck_1, twoDeck_2, twoDeck_3, threeDeck_1, threeDeck_2, fourDeck};
         Label[][] cell = new Label[10][10];
         HashMap<Integer, ImageView[]> ships = new HashMap<>();
 
         for (int i = 0; i < myField.getRowCount(); i++) {
             for (int j = 0; j < myField.getColumnCount(); j++) {
                 cell[i][j] = new Label();
-                cell[i][j].setPrefSize(30,30);
+                cell[i][j].setPrefSize(30, 30);
                 myField.add(cell[i][j], j, i);
             }
         }
-        ships.put(1, new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4});
-        ships.put(2, new ImageView[] {twoDeck_1, twoDeck_2, twoDeck_3});
-        ships.put(3, new ImageView[] {threeDeck_1, threeDeck_2});
-        ships.put(4, new ImageView[] {fourDeck});
-        for(int i = 1; i <= ships.size(); i++) {
+        ships.put(1, new ImageView[]{oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4});
+        ships.put(2, new ImageView[]{twoDeck_1, twoDeck_2, twoDeck_3});
+        ships.put(3, new ImageView[]{threeDeck_1, threeDeck_2});
+        ships.put(4, new ImageView[]{fourDeck});
+        for (int i = 1; i <= ships.size(); i++) {
             //Integer key = entry.getKey();
             ImageView[] value = ships.get(i);
             for (ImageView imageView : value) {
@@ -161,26 +140,35 @@ public class ArrangementWindowController {
 
     void myFieldToLabel() throws IOException, URISyntaxException {
         int index = 0;
-        ObservableList<Node> label = myField.getChildren();
-        for (Node node : label) {
+        int lastIndex = 0;
+        int counter = 0;
+        ObservableList<Node> labels = myField.getChildren();
+        for (Node node : labels) {
             Label l = (Label) node;
             if (l.getGraphic() != null) {
-                out[index] = 1;
-            } else {
+                counter ++;
+                lastIndex = index;
+            }
+            if (l.getGraphic() == null || index == labels.size() - 1) {
                 out[index] = 0;
+                for (int i = lastIndex - counter + 1; i <= lastIndex; i ++) {
+                    out[i] = counter;
+                }
+                counter = 0;
             }
             index++;
         }
         URL urlFileFieldInArray = Application.class.getResource("resource/file/fieldInArray");
         Path pathFileFieldInArray = Paths.get(Objects.requireNonNull(urlFileFieldInArray).toURI());
-        FileOutputStream file = new FileOutputStream(String.valueOf(pathFileFieldInArray));
+        File file = new File(String.valueOf(pathFileFieldInArray));
+        FileWriter fileWriter = new FileWriter(file);
         for (int i : out) {
-            file.write(i);
+            fileWriter.write(String.valueOf(i));
         }
-        file.close();
+        fileWriter.close();
     }
 
-    void  putShip(ImageView source, Label[][] targets) {
+    void putShip(ImageView source, Label[][] targets) {
         Image possibleCellImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/PossibleCell.png")).toExternalForm());
         Image impossibleCellImage = new Image(Objects.requireNonNull(Objects.requireNonNull(Application.class.getResource("resource/photo/ImpossibleCell.png")).toExternalForm()));
 
@@ -199,8 +187,8 @@ public class ArrangementWindowController {
         for (int i = 0; i < targets.length; i++) {
             for (int j = 0; j < targets[i].length; j++) {
                 Label target = targets[i][j];
-                Label[] possibleTargets = new Label[] {null, null, null};
-                Label[][]  fullCells = new Label[][] {{null, null, null, null, null, null}, {null, null, null, null, null, null}, {null, null, null, null, null, null}};
+                Label[] possibleTargets = new Label[]{null, null, null};
+                Label[][] fullCells = new Label[][]{{null, null, null, null, null, null}, {null, null, null, null, null, null}, {null, null, null, null, null, null}};
 
                 for (int k = 0; k < possibleTargets.length; k++) {
                     if (j + k + 1 < targets[i].length) {
@@ -208,18 +196,18 @@ public class ArrangementWindowController {
                     }
                 }
 
-                for (int l = 0; l < fullCells.length; l ++) {
+                for (int l = 0; l < fullCells.length; l++) {
                     for (int k = 0; k < fullCells[l].length; k++) {
                         if (j + k - 1 < targets[i].length && i + l - 1 < targets.length) {
                             if (i != 0 && j != 0) {
-                                fullCells[l][k] =  targets[i - 1 + l][j - 1 + k];
+                                fullCells[l][k] = targets[i - 1 + l][j - 1 + k];
                             } else {
                                 if (i == 0 && l != 0 && j != 0)
-                                    fullCells[l][k] =  targets[l - 1][j - 1 + k];
+                                    fullCells[l][k] = targets[l - 1][j - 1 + k];
                                 if (j == 0 && k != 0 && i != 0)
-                                    fullCells[l][k] =  targets[i - 1 + l][k - 1];
+                                    fullCells[l][k] = targets[i - 1 + l][k - 1];
                                 if (i == 0 && j == 0 && l != 0 && k != 0)
-                                    fullCells[l][k] =  targets[i + l - 1][j + k - 1];
+                                    fullCells[l][k] = targets[i + l - 1][j + k - 1];
                             }
 
                         }
@@ -244,7 +232,7 @@ public class ArrangementWindowController {
                     /* show to the user that it is an actual gesture target */
                     if (event.getGestureSource() != target &&
                             event.getDragboard().hasImage()) {
-                        for (int k = 0; k < this.amountOfDecks + 2; k ++) {
+                        for (int k = 0; k < this.amountOfDecks + 2; k++) {
                             if (fullCells[0][k] != null) {
                                 if (Objects.equals(fullCells[0][k].getText(), "\u200E") && fullCells[0][k].getGraphic() == null) {
                                     fullCells[0][k].setGraphic(new ImageView(impossibleCellImage));
@@ -271,7 +259,7 @@ public class ArrangementWindowController {
 
                 target.setOnDragExited(event -> {
                     /* mouse moved away, remove the graphical cues */
-                    for (int k = 0; k < this.amountOfDecks + 2; k ++) {
+                    for (int k = 0; k < this.amountOfDecks + 2; k++) {
                         if (fullCells[0][k] != null) {
                             ImageView a = (ImageView) fullCells[0][k].getGraphic();
                             if (a != null && (a.getImage() == possibleCellImage || a.getImage() == impossibleCellImage))
@@ -321,7 +309,7 @@ public class ArrangementWindowController {
                         }
 
                         if (this.amountOfDecks == count && this.amountOfDecks == countEmpty) {
-                            for (int k = 0; k < this.amountOfDecks + 2; k ++) {
+                            for (int k = 0; k < this.amountOfDecks + 2; k++) {
                                 if (fullCells[0][k] != null) {
                                     fullCells[0][k].setText("\u200E");
                                 }

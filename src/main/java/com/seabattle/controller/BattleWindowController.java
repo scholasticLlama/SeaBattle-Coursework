@@ -7,12 +7,15 @@ import com.seabattle.view.Audio;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -43,7 +46,7 @@ public class BattleWindowController {
     private ImageView whoseMoveImage;
     private Label[][] enemyShipsLabel = new Label[10][10];
     private int[][] enemyShips = new int[10][10];
-    private byte[] myField;
+    private int[][] myField = new int[10][10];
     private int myShipCount;
     private int enemyShipCount;
 
@@ -60,11 +63,11 @@ public class BattleWindowController {
         Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
         whoseMoveImage.setImage(myMoveArrowImage);
 
-        Image[] images = new Image[]{oneShipImage, twoShipImage, threeShipImage, fourShipImage};
+        Image[] images = new Image[] {oneShipImage, twoShipImage, threeShipImage, fourShipImage};
 
         URL url = Application.class.getResource("resource/file/fieldInArray");
         Path path = Paths.get(Objects.requireNonNull(url).toURI());
-        FileInputStream file = new FileInputStream(String.valueOf(path));
+        File file = new File(String.valueOf(path));
 
         Ship.placeMyShip(myField, file, myFieldGrid, images);
 
@@ -83,9 +86,6 @@ public class BattleWindowController {
             randomSetting.setShips();
         } while (randomSetting.ships.size() > 0 && !randomSetting.isFull);
         enemyShips = randomSetting.field;
-        for (int[] enemyShip : enemyShips) {
-            System.out.println(Arrays.toString(enemyShip));
-        }
         for (int i = 0; i < enemyShipsLabel.length; i++) {
             for (int j = 0; j < enemyShipsLabel[i].length; j++) {
                 enemyShipsLabel[i][j] = new Label();
@@ -96,12 +96,6 @@ public class BattleWindowController {
             }
         }
         enemyShipsLabel = addPosition(enemyShipsLabel, enemyShips);
-        for (int i = 0; i < enemyShipsLabel.length; i++) {
-            for (int i1 = 0; i1 < enemyShipsLabel[i].length; i1++) {
-                System.out.print(enemyShipsLabel[i][i1].getText() + " ");
-            }
-            System.out.println();
-        }
     }
 
     Label[][] addPosition(Label[][] enemyShipsLabel, int[][] enemyShips) {
@@ -255,7 +249,6 @@ public class BattleWindowController {
                 counter++;
             }
         }
-        System.out.println("Counter = " + counter + " " + "ShipInfo[0] " + shipInfo[0]);
         return counter == Integer.parseInt(shipInfo[0]);
     }
 
@@ -313,6 +306,15 @@ public class BattleWindowController {
         setEmptyImageRight(row, column, length, enemyShipsLabel, emptyCell);
         setEmptyImageUnder(row, column, length, enemyShipsLabel, emptyCell);
         setEmptyImageOver(row, column, length, enemyShipsLabel, emptyCell);
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int column, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
 }
