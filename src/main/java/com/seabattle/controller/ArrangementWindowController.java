@@ -1,5 +1,6 @@
 package com.seabattle.controller;
 
+import com.seabattle.model.CreateField;
 import com.seabattle.view.Application;
 import com.seabattle.view.Audio;
 import com.seabattle.view.WindowControlManager;
@@ -132,8 +133,10 @@ public class ArrangementWindowController {
             gameStage.show();
             stage.hide();
         });
-
+        ImageView[] imageViews = new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4, twoDeck_1, twoDeck_2, twoDeck_3, threeDeck_1, threeDeck_2, fourDeck};
         Label[][] cell = new Label[10][10];
+        HashMap<Integer, ImageView[]> ships = new HashMap<>();
+
         for (int i = 0; i < myField.getRowCount(); i++) {
             for (int j = 0; j < myField.getColumnCount(); j++) {
                 cell[i][j] = new Label();
@@ -141,7 +144,6 @@ public class ArrangementWindowController {
                 myField.add(cell[i][j], j, i);
             }
         }
-        HashMap<Integer, ImageView[]> ships = new HashMap<>();
         ships.put(1, new ImageView[] {oneDeck_1, oneDeck_2, oneDeck_3, oneDeck_4});
         ships.put(2, new ImageView[] {twoDeck_1, twoDeck_2, twoDeck_3});
         ships.put(3, new ImageView[] {threeDeck_1, threeDeck_2});

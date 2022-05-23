@@ -5,8 +5,7 @@ import java.io.IOException;
 import javax.sound.sampled.*;
 
 public class Audio {
-    private String track;
-    private Clip clip = null;
+    private final String track;
     private FloatControl volumeC = null;
     private  double wt;
 
@@ -24,7 +23,7 @@ public class Audio {
             e.printStackTrace();
         }
         try {
-            clip = AudioSystem.getClip();
+            Clip clip = AudioSystem.getClip();
             clip.open(tr);
             volumeC = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             clip.setFramePosition(0);
