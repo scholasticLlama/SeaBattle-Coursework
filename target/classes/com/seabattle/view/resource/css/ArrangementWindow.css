@@ -6,12 +6,36 @@
     -fx-background-image: url("../photo/StartGame.png");
 }
 
+.minimizeButton {
+    -fx-background-image: url("../photo/Minimize_Button.png");
+}
+
+.exitButton {
+    -fx-background-image: url("../photo/Exit_Button.png");
+}
+
+.resetButton {
+    -fx-background-image: url("../photo/Reset_Button.png");
+}
+
 .randomShipPlace {
     -fx-background-image: url("../photo/RandomShipPlace.png");
 }
 
 .startGame:hover {
     -fx-background-image: url("../photo/StartGameHover.png");
+}
+
+.minimizeButton:hover {
+    -fx-background-image: url("../photo/Minimize_Button_Hover.png");
+}
+
+.exitButton:hover {
+    -fx-background-image: url("../photo/Exit_Button_Hover.png");
+}
+
+.resetButton:hover {
+    -fx-background-image: url("../photo/Reset_Button_Hover.png");
 }
 
 .randomShipPlace:hover {
@@ -22,19 +46,18 @@
     -fx-background-image: url("../photo/StartGamePressed.png");
 }
 
+.minimizeButton:pressed {
+    -fx-background-image: url("../photo/Minimize_Button_Pressed.png");
+}
+
+.exitButton:pressed {
+    -fx-background-image: url("../photo/Exit_Button_Pressed.png");
+}
+
+.resetButton:pressed {
+    -fx-background-image: url("../photo/Reset_Button_Pressed.png");
+}
+
 .randomShipPlace:pressed {
     -fx-background-image: url("../photo/RandomShipPlacePressed.png");
-}
-
-.exitButton:hover,
-.minimizeButton:hover {
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-background-radius: 5;
-    -fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 0.0%, #7ee8ecff 0.0%, #4a4ae3ff 100.0%);
-}
-
-.exitIcon:hover,
-.minimizeIcon:hover {
-    -fx-icon-color: #ffffff;
 }

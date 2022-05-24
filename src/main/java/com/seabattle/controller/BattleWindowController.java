@@ -75,7 +75,7 @@ public class BattleWindowController {
 
         WindowControlManager.closeWindow(closeWindowButton);
         WindowControlManager.minimizeWindow(minimizeWindowButton);
-        WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton);
+        WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton, homeWindowButton);
 
     }
 
@@ -306,15 +306,6 @@ public class BattleWindowController {
         setEmptyImageRight(row, column, length, enemyShipsLabel, emptyCell);
         setEmptyImageUnder(row, column, length, enemyShipsLabel, emptyCell);
         setEmptyImageOver(row, column, length, enemyShipsLabel, emptyCell);
-    }
-
-    private Node getNodeFromGridPane(GridPane gridPane, int column, int row) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
     }
 
 }

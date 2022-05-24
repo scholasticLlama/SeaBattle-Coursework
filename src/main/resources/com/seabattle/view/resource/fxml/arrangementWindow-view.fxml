@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="720.0" styleClass="anchorPane" stylesheets="@../css/ArrangementWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.controller.ArrangementWindowController">
    <children>
@@ -123,15 +122,20 @@
       </GridPane>
       <AnchorPane fx:id="menuBar" prefHeight="60.0" prefWidth="720.0" stylesheets="@../css/ArrangementWindow.css">
          <children>
-            <Label fx:id="closeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="665.0" layoutY="10.0" styleClass="exitButton" stylesheets="@../css/ArrangementWindow.css">
-               <graphic>
-                  <FontIcon iconLiteral="bx-exit" iconSize="40" styleClass="exitIcon" />
-               </graphic>
+            <Label fx:id="closeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="665.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="exitButton" stylesheets="@../css/ArrangementWindow.css">
+               <effect>
+                  <DropShadow height="15.0" radius="7.0" width="15.0" />
+               </effect>
             </Label>
-            <Label fx:id="minimizeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="615.0" layoutY="10.0" styleClass="minimizeButton" stylesheets="@../css/ArrangementWindow.css">
-               <graphic>
-                  <FontIcon iconLiteral="bx-no-entry" iconSize="40" styleClass="minimizeIcon" />
-               </graphic>
+            <Label fx:id="minimizeWindowButton" alignment="CENTER" contentDisplay="CENTER" layoutX="605.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="minimizeButton" stylesheets="@../css/ArrangementWindow.css">
+               <effect>
+                  <DropShadow height="15.0" radius="7.0" width="15.0" />
+               </effect>
+            </Label>
+            <Label fx:id="resetButton" alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="resetButton" stylesheets="@../css/ArrangementWindow.css">
+               <effect>
+                  <DropShadow height="15.0" radius="7.0" width="15.0" />
+               </effect>
             </Label>
          </children>
       </AnchorPane>
