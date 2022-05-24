@@ -1,6 +1,11 @@
-com\seabattle\Application.class
-com\seabattle\MainWindowController.class
-com\seabattle\ArrangementWindowController.class
-module-info.class
-com\seabattle\Audio.class
+com\seabattle\model\Ship.class
+com\seabattle\model\GridPaneControl.class
+com\seabattle\model\DragAndDropShip.class
+com\seabattle\view\WindowControlManager.class
+com\seabattle\model\RandomSetting.class
 com\seabattle\Main.class
+com\seabattle\view\Application.class
+com\seabattle\controller\ArrangementWindowController.class
+com\seabattle\view\InfoWindow.class
+com\seabattle\controller\BattleWindowController.class
+com\seabattle\view\Audio.class

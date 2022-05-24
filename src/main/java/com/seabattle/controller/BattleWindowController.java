@@ -142,8 +142,9 @@ public class BattleWindowController {
         Audio brokenShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/BrokenShip.wav")));
         for (int i = 0; i < enemyFieldGrid.getRowCount(); i++) {
             for (int j = 0; j < enemyFieldGrid.getColumnCount(); j++) {
+                Label labelGraphic = enemyShipsLabel[i][j];
                 enemyShipsLabel[i][j].setOnMouseClicked(event -> {
-                    if (turn[0]) {
+                    if (turn[0] &&  labelGraphic.getGraphic() == null) {
                         Label label = (Label) event.getSource();
                         String labelValue = label.getText();
                         int row = 0;

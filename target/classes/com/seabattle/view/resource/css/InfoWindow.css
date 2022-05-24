@@ -1,0 +1,15 @@
+.anchorPane {
+    -fx-background-image: url("../photo/InfoWindow.png");
+}
+
+.exitButton {
+    -fx-background-image: url("../photo/Exit_Button.png");
+}
+
+.exitButton:hover {
+    -fx-background-image: url("../photo/Exit_Button_Hover.png");
+}
+
+.exitButton:pressed {
+    -fx-background-image: url("../photo/Exit_Button_Pressed.png");
+}

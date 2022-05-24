@@ -90,4 +90,18 @@ public class Ship {
             default -> null;
         };
     }
+
+    public static boolean isAllShipUse(GridPane gridPane) {
+        int countOfDesks = 0;
+        for (int i = 0; i < gridPane.getRowCount(); i++) {
+            for (int j = 0; j < gridPane.getColumnCount(); j++) {
+                Label label = (Label) GridPaneControl.getNodeFromGridPane(gridPane, j, i);
+                assert label != null;
+                if (label.getGraphic() != null) {
+                    countOfDesks++;
+                }
+            }
+        }
+        return countOfDesks == 20;
+    }
 }

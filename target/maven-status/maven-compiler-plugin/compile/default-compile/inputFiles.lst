@@ -1,6 +1,11 @@
-E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\ArrangementWindowController.java
-E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\module-info.java
-E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\Application.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\model\GridPaneControl.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\controller\BattleWindowController.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\model\Ship.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\view\InfoWindow.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\controller\ArrangementWindowController.java
 E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\Main.java
-E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\MainWindowController.java
-E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\Audio.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\model\RandomSetting.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\view\Audio.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\model\DragAndDropShip.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\view\Application.java
+E:\Kiril\KPI\SeaBattle-Coursework\src\main\java\com\seabattle\view\WindowControlManager.java

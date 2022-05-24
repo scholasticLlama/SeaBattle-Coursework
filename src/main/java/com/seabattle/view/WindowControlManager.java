@@ -92,7 +92,7 @@ public class WindowControlManager {
         });
     }
 
-    public static void randomShipPlace(Button button, GridPane gridPane, HashMap<Integer, ImageView[]> ships, ImageView emptyImage) {
+    public static void randomShipPlace(Label button, GridPane gridPane, HashMap<Integer, ImageView[]> ships, ImageView emptyImage) {
         button.setOnMouseClicked(event -> {
             URL urlAudioRandomPlaceButton = Application.class.getResource("resource/sound/RandomPlaceButton.wav");
             Path pathAudioRandomPlaceButton = null;
