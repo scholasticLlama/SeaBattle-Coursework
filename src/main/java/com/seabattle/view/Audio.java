@@ -6,12 +6,9 @@ import javax.sound.sampled.*;
 
 public class Audio {
     private final String track;
-    private FloatControl volumeC = null;
-    private  double wt;
 
-    public Audio(String track, double wt) {
+    public Audio(String track) {
         this.track = track;
-        this.wt = wt;
     }
 
     public void sound() {
@@ -25,7 +22,6 @@ public class Audio {
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(tr);
-            volumeC = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             clip.setFramePosition(0);
             clip.start();
         } catch (LineUnavailableException | IOException e) {
@@ -33,11 +29,4 @@ public class Audio {
         }
     }
 
-    public void setVolume() {
-        if (wt < 0) wt = 0;
-        if (wt > 1) wt = 1;
-        float min = volumeC.getMinimum();
-        float max = volumeC.getMaximum();
-        volumeC.setValue((max - min) * (float) wt +min);
-    }
 }

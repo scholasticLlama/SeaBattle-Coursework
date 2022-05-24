@@ -16,30 +16,34 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public class Ship {
-    public static void placeMyShip(int[][] myField, File file, GridPane myFieldGrid, Image[] images) throws IOException {
+    public static void getMyShip(int[][] field, File file, GridPane gridPane, Image[] images) throws IOException {
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String stringArray = bufferedReader.readLine();
         bufferedReader.close();
         fileReader.close();
         int index = 0;
-        int shift = 0;
         char element;
-        for (int n = 0; n < myField.length; n++) {
-            for (int m = 0; m < myField[n].length; m++) {
+        for (int n = 0; n < field.length; n++) {
+            for (int m = 0; m < field[n].length; m++) {
                 element = stringArray.charAt(index);
-                myField[n][m] = Integer.parseInt(String.valueOf(element));
+                field[n][m] = Integer.parseInt(String.valueOf(element));
                 index++;
             }
         }
-        for (int i = 0; i < myField.length; i++) {
-            for (int j = 0; j < myField[i].length; j = shift) {
-                if (myField[i][j] > 0) {
+        placeMyShip(field, gridPane, images);
+    }
+
+    public static void placeMyShip(int[][] field, GridPane gridPane, Image[] images) {
+        int shift = 0;
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j = shift) {
+                if (field[i][j] > 0) {
                     Label label = new Label();
                     label.setPrefSize(30, 30);
-                    label.setGraphic(new ImageView(getShipImage(myField[i][j], images)));
-                    myFieldGrid.add(label, j, i);
-                    shift += myField[i][j];
+                    label.setGraphic(new ImageView(getShipImage(field[i][j], images)));
+                    gridPane.add(label, j, i);
+                    shift += field[i][j];
                 } else shift++;
             }
             shift = 0;
@@ -77,7 +81,7 @@ public class Ship {
         fileWriter.close();
     }
 
-    private static Image getShipImage(int numberOfDesks, Image[] images) {
+    public static Image getShipImage(int numberOfDesks, Image[] images) {
         return switch (numberOfDesks) {
             case 1 -> images[0];
             case 2 -> images[1];

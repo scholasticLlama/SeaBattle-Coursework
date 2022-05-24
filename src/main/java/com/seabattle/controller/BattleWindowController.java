@@ -7,22 +7,18 @@ import com.seabattle.view.Audio;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class BattleWindowController {
@@ -69,7 +65,7 @@ public class BattleWindowController {
         Path path = Paths.get(Objects.requireNonNull(url).toURI());
         File file = new File(String.valueOf(path));
 
-        Ship.placeMyShip(myField, file, myFieldGrid, images);
+        Ship.getMyShip(myField, file, myFieldGrid, images);
 
         enemyField();
 
@@ -141,9 +137,9 @@ public class BattleWindowController {
         Image fourDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_4x1_H_B.png")).toExternalForm());
         Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
         Image enemyMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EnemyMoveArrow.png")).toExternalForm());
-        Audio emptyCellAudio = new Audio(String.valueOf(getAudioPath("resource/sound/EmptyCell.wav")), 0.9);
-        Audio hitShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/HitShip.wav")), 0.9);
-        Audio brokenShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/BrokenShip.wav")), 0.9);
+        Audio emptyCellAudio = new Audio(String.valueOf(getAudioPath("resource/sound/EmptyCell.wav")));
+        Audio hitShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/HitShip.wav")));
+        Audio brokenShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/BrokenShip.wav")));
         for (int i = 0; i < enemyFieldGrid.getRowCount(); i++) {
             for (int j = 0; j < enemyFieldGrid.getColumnCount(); j++) {
                 enemyShipsLabel[i][j].setOnMouseClicked(event -> {
