@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="720.0" styleClass="anchorPane" stylesheets="@../css/ArrangementWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.controller.ArrangementWindowController">
    <children>
@@ -132,6 +133,11 @@
                <effect>
                   <DropShadow height="15.0" radius="7.0" width="15.0" />
                </effect>
+            </Label>
+            <Label layoutX="218.0" layoutY="15.0" text="Розстановка кораблів" textFill="#00007c">
+               <font>
+                  <Font name="Calibri Bold" size="30.0" />
+               </font>
             </Label>
          </children>
       </AnchorPane>
