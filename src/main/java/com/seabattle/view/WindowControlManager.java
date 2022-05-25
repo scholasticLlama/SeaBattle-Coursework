@@ -134,7 +134,7 @@ public class WindowControlManager {
                 for (int j = 0; j < gridPane.getColumnCount(); j++) {
                     Label label = (Label) GridPaneControl.getNodeFromGridPane(gridPane, j, i);
                     assert label != null;
-                    if (myShips[i][j] > 0 && shift < 1) {
+                    if (myShips[i][j] > 0 && shift <= 1) {
                         label.setGraphic(new ImageView(Ship.getShipImage(myShips[i][j], images)));
                         shift = myShips[i][j];
                     } else {
