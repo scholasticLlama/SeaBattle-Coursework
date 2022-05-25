@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="420.0" prefWidth="720.0" styleClass="anchorPane" stylesheets="@../css/CreatorsWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.controller.CreatorsWindowController">
+   <children>
+      <AnchorPane fx:id="menuBar" prefHeight="60.0" prefWidth="720.0">
+         <children>
+            <Label layoutX="288.0" layoutY="11.0" text="Автори гри" textFill="#07008a">
+               <font>
+                  <Font name="Calibri Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="65.0" layoutY="90.0" text="Роботу виконили студенти 2-го курсу:" textFill="#01004d">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="150.0" text="Ващук Кирил" textFill="#01004d">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="210.0" text="Кожемяко Ярослава" textFill="#01004d">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="270.0" text="Негрич Ярослава" textFill="#01004d">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="60.0" layoutY="360.0" text="Перевірив: Антонюк Андрій Іванович" textFill="#01004d">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="telegramButtonV" layoutX="360.0" layoutY="140.0" text="Telegram" underline="true">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Hyperlink>
+      <Hyperlink fx:id="telegramButtonK" layoutX="360.0" layoutY="200.0" text="Telegram" underline="true">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Hyperlink>
+      <Hyperlink fx:id="telegramButtonN" layoutX="360.0" layoutY="260.0" text="Telegram" underline="true">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Hyperlink>
+      <Label fx:id="exitButton" layoutX="665.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="exitButton">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </Label>
+      <Label fx:id="minimizeButton" layoutX="605.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="minimizeButton">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </Label>
+      <Label fx:id="homeButton" layoutX="5.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="homeButton">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </Label>
+   </children>
+</AnchorPane>

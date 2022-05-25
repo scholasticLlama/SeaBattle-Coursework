@@ -1,0 +1,39 @@
+.anchorPane {
+    -fx-background-image: url("../photo/CreatorsBackground.png");
+}
+
+.minimizeButton {
+    -fx-background-image: url("../photo/Minimize_Button.png");
+}
+
+.exitButton {
+    -fx-background-image: url("../photo/Exit_Button.png");
+}
+
+.homeButton {
+    -fx-background-image: url("../photo/Home_Button.png");
+}
+
+.minimizeButton:hover {
+    -fx-background-image: url("../photo/Minimize_Button_Hover.png");
+}
+
+.exitButton:hover {
+    -fx-background-image: url("../photo/Exit_Button_Hover.png");
+}
+
+.homeButton:hover {
+    -fx-background-image: url("../photo/Home_Button_Hover.png");
+}
+
+.minimizeButton:pressed {
+    -fx-background-image: url("../photo/Minimize_Button_Pressed.png");
+}
+
+.exitButton:pressed {
+    -fx-background-image: url("../photo/Exit_Button_Pressed.png");
+}
+
+.homeButton:pressed {
+    -fx-background-image: url("../photo/Home_Button_Pressed.png");
+}

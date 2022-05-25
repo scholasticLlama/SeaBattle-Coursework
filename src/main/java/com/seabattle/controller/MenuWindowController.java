@@ -30,6 +30,7 @@ public class MenuWindowController {
         WindowControlManager.minimizeWindow(minimizeButton);
         WindowControlManager.dragWindow(menuBar, minimizeButton, minimizeButton, minimizeButton);
         WindowControlManager.openNewWindowEvent(battleButton, "resource/fxml/arrangementWindow-view.fxml");
+        WindowControlManager.openNewWindowEvent(creatorsButton, "resource/fxml/creatorsWindow-view.fxml");
     }
 
 }

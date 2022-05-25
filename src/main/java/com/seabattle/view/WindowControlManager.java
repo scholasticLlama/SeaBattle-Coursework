@@ -6,6 +6,7 @@ import com.seabattle.model.RandomSetting;
 import com.seabattle.model.Ship;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +16,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -168,6 +171,7 @@ public class WindowControlManager {
     }
 
     public static void openNewWindow(Label button, String path) throws URISyntaxException {
+        Image icon = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/icon-ship.png")).toExternalForm());
         URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
         Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
         Audio clickButton = new Audio(String.valueOf(pathAudioClickButton));
@@ -183,11 +187,32 @@ public class WindowControlManager {
         }
         gameStage.setTitle("Sea Battle");
         gameStage.initStyle(StageStyle.UNDECORATED);
+        gameStage.getIcons().add(icon);
         gameStage.setX(stage.getX());
         gameStage.setY(stage.getY());
 
         gameStage.setScene(scene);
         gameStage.show();
         stage.hide();
+    }
+
+    public static void openBrowse(Hyperlink hyperlink, String url) {
+        hyperlink.setOnMouseClicked(event -> {
+            if(Desktop.isDesktopSupported()){
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.browse(new URI(url));
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                Runtime runtime = Runtime.getRuntime();
+                try {
+                    runtime.exec("xdg-open " + url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
