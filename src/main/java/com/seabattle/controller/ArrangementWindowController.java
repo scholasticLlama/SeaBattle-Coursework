@@ -1,7 +1,6 @@
 package com.seabattle.controller;
 
 import com.seabattle.model.DragAndDropShip;
-import com.seabattle.model.GridPaneControl;
 import com.seabattle.model.Ship;
 import com.seabattle.view.Application;
 import com.seabattle.view.Audio;
@@ -10,7 +9,6 @@ import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,7 +25,6 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public class ArrangementWindowController {
-
     @FXML
     public GridPane myField;
     @FXML
@@ -36,6 +33,8 @@ public class ArrangementWindowController {
     private ImageView emptyImage;
     @FXML
     private ImageView fourDeck;
+    @FXML
+    private Label homeButton;
     @FXML
     private AnchorPane menuBar;
     @FXML
@@ -82,6 +81,7 @@ public class ArrangementWindowController {
 
         WindowControlManager.closeWindow(closeWindowButton);
         WindowControlManager.minimizeWindow(minimizeWindowButton);
+        WindowControlManager.openNewWindowEvent(homeButton, "resource/fxml/menuWindow-view.fxml");
         WindowControlManager.randomShipPlace(randomShipPlace, myField, DragAndDropShip.getShips(), emptyImage);
         WindowControlManager.resetShips(resetButton, myField, DragAndDropShip.getShips(), images, emptyImage, DragAndDropShip.getCell());
         WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton, resetButton);
@@ -94,23 +94,11 @@ public class ArrangementWindowController {
                 } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
                 }
-                Stage gameStage = new Stage();
-                Stage stage = (Stage) startGame.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(Application.class.getResource("resource/fxml/battleWindow-view.fxml"));
-                Scene scene = null;
                 try {
-                    scene = new Scene(loader.load(), 720, 420);
-                } catch (IOException e) {
+                    WindowControlManager.openNewWindow(startGame, "resource/fxml/battleWindow-view.fxml");
+                } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
-                gameStage.setTitle("Sea Battle");
-                gameStage.initStyle(StageStyle.UNDECORATED);
-                gameStage.setX(stage.getX());
-                gameStage.setY(stage.getY());
-
-                gameStage.setScene(scene);
-                gameStage.show();
-                stage.hide();
             } else {
                 String errorMassage = "Ви використали не всі кораблі! Розставте всі дані кораблі, та спробуйде ще раз.";
                 InfoWindow infoWindow = new InfoWindow(errorMassage, "Помилка", (Stage) startGame.getScene().getWindow());

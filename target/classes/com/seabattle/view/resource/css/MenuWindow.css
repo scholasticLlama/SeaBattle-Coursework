@@ -1,0 +1,51 @@
+.anchorPane {
+    -fx-background-image: url("../photo/MenuBackground.gif");
+}
+
+.exitButton {
+    -fx-background-image: url("../photo/ExitGameButton.png");
+}
+
+.exitButton:hover {
+    -fx-background-image: url("../photo/ExitGameButtonHover.png");
+}
+
+.exitButton:pressed {
+    -fx-background-image: url("../photo/ExitGameButtonPressed.png");
+}
+
+.creatorsButton {
+    -fx-background-image: url("../photo/CreatorsButton.png");
+}
+
+.creatorsButton:hover {
+    -fx-background-image: url("../photo/CreatorsButtonHover.png");
+}
+
+.creatorsButton:pressed {
+    -fx-background-image: url("../photo/CreatorsButtonPressed.png");
+}
+
+.battleButton {
+    -fx-background-image: url("../photo/BattleButton.png");
+}
+
+.battleButton:hover {
+    -fx-background-image: url("../photo/BattleButtonHover.png");
+}
+
+.battleButton:pressed {
+    -fx-background-image: url("../photo/BattleButtonPressed.png");
+}
+
+.minimizeButton {
+    -fx-background-image: url("../photo/Minimize_Button.png");
+}
+
+.minimizeButton:hover {
+    -fx-background-image: url("../photo/Minimize_Button_Hover.png");
+}
+
+.minimizeButton:pressed {
+    -fx-background-image: url("../photo/Minimize_Button_Pressed.png");
+}

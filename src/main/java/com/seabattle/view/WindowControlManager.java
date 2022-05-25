@@ -4,7 +4,8 @@ import com.seabattle.model.DragAndDropShip;
 import com.seabattle.model.GridPaneControl;
 import com.seabattle.model.RandomSetting;
 import com.seabattle.model.Ship;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,7 +13,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -27,18 +30,26 @@ public class WindowControlManager {
     private static double yOffset;
     private static boolean isPossibleToDrag;
 
-    public static void closeWindow(Label button) {
+    public static void closeWindow(Label button) throws URISyntaxException {
+        URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
+        Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
+        Audio clickButton = new Audio(String.valueOf(pathAudioClickButton));
         button.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
+                clickButton.sound();
                 Stage stage = (Stage) button.getScene().getWindow();
                 stage.close();
             }
         });
     }
 
-    public static void minimizeWindow(Label button) {
+    public static void minimizeWindow(Label button) throws URISyntaxException {
+        URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
+        Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
+        Audio clickButton = new Audio(String.valueOf(pathAudioClickButton));
         button.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
+                clickButton.sound();
                 Stage stage = (Stage) button.getScene().getWindow();
                 stage.setIconified(true);
             }
@@ -144,5 +155,39 @@ public class WindowControlManager {
                 }
             }
         });
+    }
+
+    public static void openNewWindowEvent(Label button, String path) {
+        button.setOnMouseClicked(event -> {
+            try {
+                openNewWindow(button, path);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static void openNewWindow(Label button, String path) throws URISyntaxException {
+        URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
+        Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
+        Audio clickButton = new Audio(String.valueOf(pathAudioClickButton));
+        clickButton.sound();
+        Stage gameStage = new Stage();
+        Stage stage = (Stage) button.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(Application.class.getResource(path));
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load(), 720, 420);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gameStage.setTitle("Sea Battle");
+        gameStage.initStyle(StageStyle.UNDECORATED);
+        gameStage.setX(stage.getX());
+        gameStage.setY(stage.getY());
+
+        gameStage.setScene(scene);
+        gameStage.show();
+        stage.hide();
     }
 }

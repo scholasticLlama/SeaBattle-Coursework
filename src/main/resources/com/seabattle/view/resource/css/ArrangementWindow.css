@@ -14,6 +14,10 @@
     -fx-background-image: url("../photo/Exit_Button.png");
 }
 
+.homeButton {
+    -fx-background-image: url("../photo/Home_Button.png");
+}
+
 .resetButton {
     -fx-background-image: url("../photo/Reset_Button.png");
 }
@@ -34,6 +38,10 @@
     -fx-background-image: url("../photo/Exit_Button_Hover.png");
 }
 
+.homeButton:hover {
+    -fx-background-image: url("../photo/Home_Button_Hover.png");
+}
+
 .resetButton:hover {
     -fx-background-image: url("../photo/Reset_Button_Hover.png");
 }
@@ -52,6 +60,10 @@
 
 .exitButton:pressed {
     -fx-background-image: url("../photo/Exit_Button_Pressed.png");
+}
+
+.homeButton:pressed {
+    -fx-background-image: url("../photo/Home_Button_Pressed.png");
 }
 
 .resetButton:pressed {

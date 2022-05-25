@@ -71,6 +71,7 @@ public class BattleWindowController {
 
         WindowControlManager.closeWindow(closeWindowButton);
         WindowControlManager.minimizeWindow(minimizeWindowButton);
+        WindowControlManager.openNewWindowEvent(homeWindowButton, "resource/fxml/menuWindow-view.fxml");
         WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton, homeWindowButton);
 
     }

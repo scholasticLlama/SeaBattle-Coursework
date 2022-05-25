@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="420.0" prefWidth="720.0" styleClass="anchorPane" stylesheets="@../css/MenuWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seabattle.controller.MenuWindowController">
+   <children>
+      <Label fx:id="battleButton" layoutX="15.0" layoutY="155.0" prefHeight="70.0" prefWidth="230.0" styleClass="battleButton">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </Label>
+      <Label fx:id="creatorsButton" layoutX="15.0" layoutY="245.0" prefHeight="70.0" prefWidth="230.0" styleClass="creatorsButton">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </Label>
+      <Label fx:id="exitButton" layoutX="15.0" layoutY="335.0" prefHeight="70.0" prefWidth="230.0" styleClass="exitButton">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </Label>
+      <AnchorPane fx:id="menuBar" prefHeight="60.0" prefWidth="720.0">
+         <children>
+            <Label fx:id="minimizeButton" layoutX="665.0" layoutY="5.0" prefHeight="50.0" prefWidth="50.0" styleClass="minimizeButton">
+               <effect>
+                  <DropShadow height="15.0" radius="7.0" width="15.0" />
+               </effect>
+            </Label>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>
