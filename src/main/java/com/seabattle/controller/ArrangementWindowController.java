@@ -7,15 +7,12 @@ import com.seabattle.view.Audio;
 import com.seabattle.view.InfoWindow;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,40 +24,58 @@ import java.util.Objects;
 public class ArrangementWindowController {
     @FXML
     public GridPane myField;
+
     @FXML
     private Label closeWindowButton;
+
     @FXML
     private ImageView emptyImage;
+
     @FXML
     private ImageView fourDeck;
+
     @FXML
     private Label homeButton;
+
     @FXML
     private AnchorPane menuBar;
+
     @FXML
     private Label minimizeWindowButton;
+
     @FXML
     private ImageView oneDeck_1;
+
     @FXML
     private ImageView oneDeck_2;
+
     @FXML
     private ImageView oneDeck_3;
+
     @FXML
     private ImageView oneDeck_4;
+
     @FXML
     private Label randomShipPlace;
+
     @FXML
     private Label resetButton;
+
     @FXML
     private Label startGame;
+
     @FXML
     private ImageView threeDeck_1;
+
     @FXML
     private ImageView threeDeck_2;
+
     @FXML
     private ImageView twoDeck_1;
+
     @FXML
     private ImageView twoDeck_2;
+
     @FXML
     private ImageView twoDeck_3;
 

@@ -4,12 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
 
-public class Audio {
-    private final String track;
-
-    public Audio(String track) {
-        this.track = track;
-    }
+public record Audio(String track) {
 
     public void sound() {
         File f = new File(track);
