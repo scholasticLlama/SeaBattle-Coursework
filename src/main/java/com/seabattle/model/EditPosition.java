@@ -35,6 +35,12 @@ public class EditPosition {
                             enemyShipsLabel[i][k].setText(String.valueOf(position));
                         }
                     }
+                    if (enemyShips[i][j] == 1) {
+                        enemyShipsLabel[i][j] = new Label();
+                        enemyShipsLabel[i][j].setPrefSize(30, 30);
+                        enemyShipsLabel[i][j].setOpacity(0);
+                        enemyShipsLabel[i][j].setText(enemyShips[i][j] + "," + i + "," + j);
+                    }
                     element = enemyShips[i][j];
                     counter = 1;
                 }

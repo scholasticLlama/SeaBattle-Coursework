@@ -1,11 +1,17 @@
+com\seabattle\controller\MenuWindowController.class
 com\seabattle\model\Ship.class
 com\seabattle\model\GridPaneControl.class
 com\seabattle\model\DragAndDropShip.class
 com\seabattle\view\WindowControlManager.class
+com\seabattle\view\ResultWindow.class
 com\seabattle\model\RandomSetting.class
+com\seabattle\controller\CreatorsWindowController.class
 com\seabattle\Main.class
+com\seabattle\model\AI.class
 com\seabattle\view\Application.class
 com\seabattle\controller\ArrangementWindowController.class
 com\seabattle\view\InfoWindow.class
+com\seabattle\model\EditPosition.class
 com\seabattle\controller\BattleWindowController.class
+com\seabattle\model\SetShips.class
 com\seabattle\view\Audio.class
