@@ -1,11 +1,9 @@
 package com.seabattle.controller;
 
-import com.seabattle.view.ResultWindow;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 

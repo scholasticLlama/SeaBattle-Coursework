@@ -207,6 +207,7 @@ public class BattleWindowController {
                 GridPaneControl.setEmptyImage(row, column, length, myShipsLabel, emptyCell);
                 GridPaneControl.setLabelsToGridPane(myFieldGrid, myShipsLabel);
             }
+            brokenShips.clear();
         }
     }
 
