@@ -1,5 +1,7 @@
 package com.seabattle.controller;
 
+import com.seabattle.model.AI;
+import com.seabattle.model.GridPaneControl;
 import com.seabattle.model.RandomSetting;
 import com.seabattle.model.Ship;
 import com.seabattle.view.Application;
@@ -19,7 +21,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class BattleWindowController {
 
@@ -141,6 +146,7 @@ public class BattleWindowController {
         Audio emptyCellAudio = new Audio(String.valueOf(getAudioPath("resource/sound/EmptyCell.wav")));
         Audio hitShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/HitShip.wav")));
         Audio brokenShipAudio = new Audio(String.valueOf(getAudioPath("resource/sound/BrokenShip.wav")));
+        AI ai = new AI(myField);
         for (int i = 0; i < enemyFieldGrid.getRowCount(); i++) {
             for (int j = 0; j < enemyFieldGrid.getColumnCount(); j++) {
                 Label labelGraphic = enemyShipsLabel[i][j];
@@ -225,16 +231,37 @@ public class BattleWindowController {
                             turn[1] = false;
                         }
                     }
-
                     if (turn[0]) {
                         whoseMoveImage.setImage(myMoveArrowImage);
                     } else {
                         whoseMoveImage.setImage(enemyMoveArrowImage);
+                        ai.newShot();
+                        aiShotSetImage(ai.shots);
+                        ai.shots.clear();
+                        turn[0] = true;
+                        turn[1] = false;
                     }
                 });
 
                 enemyFieldGrid.add(enemyShipsLabel[i][j], j, i);
             }
+        }
+    }
+
+    private void aiShotSetImage(ArrayList<String> shots) {
+        Image hitShip = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/HitCell.png")).toExternalForm());
+        Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
+        for (String shot : shots) {
+            int row = Integer.parseInt(shot) / 10;
+            int column = Integer.parseInt(shot) - row * 10;
+            Label label = new Label();
+            label.setPrefSize(30, 30);
+            if (myField[row][column] > 0) {
+                label.setGraphic(new ImageView(hitShip));
+            } else {
+                label.setGraphic(new ImageView(emptyCell));
+            }
+            myFieldGrid.add(label, column, row);
         }
     }
 
@@ -304,6 +331,14 @@ public class BattleWindowController {
         setEmptyImageRight(row, column, length, enemyShipsLabel, emptyCell);
         setEmptyImageUnder(row, column, length, enemyShipsLabel, emptyCell);
         setEmptyImageOver(row, column, length, enemyShipsLabel, emptyCell);
+    }
+
+    private static void pause(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            System.err.format("IOException: %s%n", e);
+        }
     }
 
 }

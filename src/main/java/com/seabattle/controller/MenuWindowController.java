@@ -1,9 +1,11 @@
 package com.seabattle.controller;
 
+import com.seabattle.view.ResultWindow;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 
@@ -29,7 +31,15 @@ public class MenuWindowController {
         WindowControlManager.closeWindow(exitButton);
         WindowControlManager.minimizeWindow(minimizeButton);
         WindowControlManager.dragWindow(menuBar, minimizeButton, minimizeButton, minimizeButton);
-        WindowControlManager.openNewWindowEvent(battleButton, "resource/fxml/arrangementWindow-view.fxml");
+        //WindowControlManager.openNewWindowEvent(battleButton, "resource/fxml/arrangementWindow-view.fxml");
+        battleButton.setOnMouseClicked(event -> {
+            ResultWindow resultWindow = new ResultWindow("5 хв.", "56", "Ти переміг", "Перемога", (Stage) battleButton.getScene().getWindow());
+            try {
+                resultWindow.start(new Stage());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         WindowControlManager.openNewWindowEvent(creatorsButton, "resource/fxml/creatorsWindow-view.fxml");
     }
 
