@@ -29,14 +29,17 @@ public class SetShips {
     public static void setMyShips(int[][] field, GridPane gridPane, Image[] images) {
         int shift = 0;
         for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j = shift) {
-                if (field[i][j] > 0) {
-                    Label label = new Label();
-                    label.setPrefSize(30, 30);
+            for (int j = 0; j < field[i].length; j++) {
+                Label label = new Label();
+                label.setPrefSize(30, 30);
+                if (field[i][j] > 0 && shift < 1) {
                     label.setGraphic(new ImageView(Ship.getShipImage(field[i][j], images)));
-                    gridPane.add(label, j, i);
-                    shift += field[i][j];
-                } else shift++;
+                    shift = field[i][j];
+                }
+                if (shift > 0) {
+                    shift--;
+                }
+                gridPane.add(label, j, i);
             }
             shift = 0;
         }

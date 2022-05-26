@@ -12,11 +12,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Ship {
-    public static void getMyShip(int[][] field, File file, GridPane gridPane, Image[] images) throws IOException {
+    public static void getMyShips(int[][] field, File file, GridPane gridPane, Image[] images) throws IOException {
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String stringArray = bufferedReader.readLine();

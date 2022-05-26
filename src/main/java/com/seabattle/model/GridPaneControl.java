@@ -16,55 +16,78 @@ public class GridPaneControl {
         return null;
     }
 
-    public static void setEmptyImageLeft(int row, int column, Label[][] enemyShipsLabel, Image emptyCell) {
+    public static void setEmptyImage(int row, int column, int length, Label[][] shipsLabel, Image emptyCell) {
+        setEmptyImageLeft(row, column, shipsLabel, emptyCell);
+        setEmptyImageRight(row, column, length, shipsLabel, emptyCell);
+        setEmptyImageUnder(row, column, length, shipsLabel, emptyCell);
+        setEmptyImageOver(row, column, length, shipsLabel, emptyCell);
+    }
+
+    public static void clearGraphicInArray(Label[][] labels) {
+        for (int i = 0; i < labels.length; i++) {
+            for (int j = 0; j < labels[i].length; j++) {
+                Label newLabel = new Label();
+                newLabel.setPrefSize(30, 30);
+                newLabel.setGraphic(null);
+                labels[i][j] = newLabel;
+            }
+        }
+    }
+
+    public static void setLabelsToGridPane(GridPane gridPane, Label[][] labels) {
+        for (int i = 0; i < labels.length; i++) {
+            for (int j = 0; j < labels[i].length; j++) {
+                if (labels[i][j].getGraphic() != null) {
+                    Label label = (Label) getNodeFromGridPane(gridPane, j, i);
+                    assert label != null;
+                    label.setGraphic(labels[i][j].getGraphic());
+                }
+            }
+        }
+    }
+
+    private static void setEmptyImageLeft(int row, int column, Label[][] shipsLabel, Image emptyCell) {
         if (column > 0) {
             for (int i = 0; i < 3; i++) {
                 if (!((i == 0 && row == 0) || (i == 2 && row == 9))) {
-                    enemyShipsLabel[row + i - 1][column - 1].setText(null);
-                    enemyShipsLabel[row + i - 1][column - 1].setGraphic(new ImageView(emptyCell));
-                    enemyShipsLabel[row + i - 1][column - 1].setOpacity(1);
+                    shipsLabel[row + i - 1][column - 1].setText(null);
+                    shipsLabel[row + i - 1][column - 1].setGraphic(new ImageView(emptyCell));
+                    shipsLabel[row + i - 1][column - 1].setOpacity(1);
                 }
             }
         }
     }
 
-    public static void setEmptyImageRight(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
+    private static void setEmptyImageRight(int row, int column, int length, Label[][] shipsLabel, Image emptyCell) {
         if (column + length <= 9) {
             for (int i = 0; i < 3; i++) {
                 if (!((i == 0 && row == 0) || (i == 2 && row == 9))) {
-                    enemyShipsLabel[row + i - 1][column + length].setText(null);
-                    enemyShipsLabel[row + i - 1][column + length].setGraphic(new ImageView(emptyCell));
-                    enemyShipsLabel[row + i - 1][column + length].setOpacity(1);
+                    shipsLabel[row + i - 1][column + length].setText(null);
+                    shipsLabel[row + i - 1][column + length].setGraphic(new ImageView(emptyCell));
+                    shipsLabel[row + i - 1][column + length].setOpacity(1);
                 }
             }
         }
     }
 
-    public static void setEmptyImageUnder(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
+    private static void setEmptyImageUnder(int row, int column, int length, Label[][] shipsLabel, Image emptyCell) {
         if (row < 9) {
             for (int i = 0; i < length; i++) {
-                enemyShipsLabel[row + 1][column + i].setText(null);
-                enemyShipsLabel[row + 1][column + i].setGraphic(new ImageView(emptyCell));
-                enemyShipsLabel[row + 1][column + i].setOpacity(1);
+                shipsLabel[row + 1][column + i].setText(null);
+                shipsLabel[row + 1][column + i].setGraphic(new ImageView(emptyCell));
+                shipsLabel[row + 1][column + i].setOpacity(1);
             }
         }
     }
 
-    public static void setEmptyImageOver(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
+    private static void setEmptyImageOver(int row, int column, int length, Label[][] shipsLabel, Image emptyCell) {
         if (row > 0) {
             for (int i = 0; i < length; i++) {
-                enemyShipsLabel[row - 1][column + i].setText(null);
-                enemyShipsLabel[row - 1][column + i].setGraphic(new ImageView(emptyCell));
-                enemyShipsLabel[row - 1][column + i].setOpacity(1);
+                shipsLabel[row - 1][column + i].setText(null);
+                shipsLabel[row - 1][column + i].setGraphic(new ImageView(emptyCell));
+                shipsLabel[row - 1][column + i].setOpacity(1);
             }
         }
-    }
-
-    public static void setEmptyImage(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
-        setEmptyImageLeft(row, column, enemyShipsLabel, emptyCell);
-        setEmptyImageRight(row, column, length, enemyShipsLabel, emptyCell);
-        setEmptyImageUnder(row, column, length, enemyShipsLabel, emptyCell);
-        setEmptyImageOver(row, column, length, enemyShipsLabel, emptyCell);
     }
 
 }

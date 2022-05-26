@@ -8,6 +8,7 @@ public class AI {
     private final ArrayList<String> cells = new ArrayList<>();
     private final ArrayList<String> currentShip = new ArrayList<>();
     public final ArrayList<String> shots = new ArrayList<>();
+    public final ArrayList<String> brokenShips = new ArrayList<>();
     private boolean shiftRight = true;
     private int shipsLeft;
     private int steps;
@@ -45,11 +46,7 @@ public class AI {
         cells.remove(String.valueOf(row * 10 + column));
         startShots.remove(String.valueOf(row * 10 + column));
         shots.add(String.valueOf(row * 10 + column));
-        if (field[row][column] >= 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return field[row][column] >= 1;
     }
 
     public void shootTillHit() {
@@ -79,6 +76,7 @@ public class AI {
         System.out.println(currentShip + " currentShip; " + currentShip.size() + " " + field[row][column]);
         if (currentShip.size() == field[row][column]) {
             deleteEmptyCellsAroundShip();
+            addBrokenShip(currentShip, brokenShips);
             currentShip.clear();
             shipsLeft--;
             shiftRight = true;
@@ -185,6 +183,18 @@ public class AI {
         int row = Integer.parseInt(currentShip.get(0)) / 10;
         int column = Integer.parseInt(currentShip.get(0)) - row * 10;
         moveLeft(row, column);
+    }
+
+    private void addBrokenShip(ArrayList<String> currentShip, ArrayList<String> brokenShips) {
+        String position = currentShip.get(0);
+        for (int i = 1; i < currentShip.size(); i++) {
+            if (Integer.parseInt(position) > Integer.parseInt(currentShip.get(i))) {
+                position = currentShip.get(i);
+            }
+        }
+        int row = Integer.parseInt(position) / 10;
+        int column = Integer.parseInt(position) - row * 10;
+        brokenShips.add(currentShip.size() + "," + row + "," + column);
     }
 
 }
