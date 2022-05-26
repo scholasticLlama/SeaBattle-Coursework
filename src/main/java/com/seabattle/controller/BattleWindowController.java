@@ -1,14 +1,10 @@
 package com.seabattle.controller;
 
-import com.seabattle.model.AI;
-import com.seabattle.model.GridPaneControl;
-import com.seabattle.model.RandomSetting;
-import com.seabattle.model.Ship;
+import com.seabattle.model.*;
 import com.seabattle.view.Application;
 import com.seabattle.view.Audio;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,39 +19,37 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 public class BattleWindowController {
 
-    private final boolean[] turn = new boolean[]{true, false};
     @FXML
     private Label closeWindowButton;
+
     @FXML
     private GridPane enemyFieldGrid;
+
     @FXML
     private Label homeWindowButton;
-    @FXML
-    private AnchorPane mainPane;
+
     @FXML
     private AnchorPane menuBar;
+
     @FXML
     private Label minimizeWindowButton;
+
     @FXML
     private GridPane myFieldGrid;
+
     @FXML
     private ImageView whoseMoveImage;
-    private Label[][] enemyShipsLabel = new Label[10][10];
-    private int[][] enemyShips = new int[10][10];
-    private int[][] myField = new int[10][10];
-    private int myShipCount;
-    private int enemyShipCount;
+
+    private final boolean[] turn = new boolean[]{true, false};
+    private final Label[][] enemyShipsLabel = new Label[10][10];
+    private final int[][] myField = new int[10][10];
 
     @FXML
     void initialize() throws IOException, URISyntaxException {
-        myShipCount = 10;
-        enemyShipCount = 10;
-        setEnemyShips();
+        SetShips.setEnemyShips(enemyShipsLabel);
 
         Image oneShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_1x1_H.png")).toExternalForm());
         Image twoShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H.png")).toExternalForm());
@@ -79,59 +73,6 @@ public class BattleWindowController {
         WindowControlManager.openNewWindowEvent(homeWindowButton, "resource/fxml/menuWindow-view.fxml");
         WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton, homeWindowButton);
 
-    }
-
-    private void setEnemyShips() {
-        RandomSetting randomSetting = new RandomSetting();
-        randomSetting.fillArraysWithDefault();
-        do {
-            randomSetting.setShips();
-        } while (randomSetting.ships.size() > 0 && !randomSetting.isFull);
-        enemyShips = randomSetting.field;
-        for (int i = 0; i < enemyShipsLabel.length; i++) {
-            for (int j = 0; j < enemyShipsLabel[i].length; j++) {
-                enemyShipsLabel[i][j] = new Label();
-                enemyShipsLabel[i][j].setPrefSize(30, 30);
-                enemyShipsLabel[i][j].setAlignment(Pos.CENTER);
-                enemyShipsLabel[i][j].setOpacity(0);
-                enemyShipsLabel[i][j].setText(String.valueOf(enemyShips[i][j]));
-            }
-        }
-        enemyShipsLabel = addPosition(enemyShipsLabel, enemyShips);
-    }
-
-    Label[][] addPosition(Label[][] enemyShipsLabel, int[][] enemyShips) {
-        for (int i = 0; i < enemyShips.length; i++) {
-            int counter = 0;
-            int index = 0;
-            int element = enemyShips[i][0];
-            for (int j = 0; j < enemyShips[i].length; j++) {
-                if (enemyShips[i][j] == element) {
-                    counter++;
-                    index = j;
-                }
-
-                if (enemyShips[i][j] != element || j == 9) {
-                    if (counter == element && element > 1) {
-                        StringBuilder position = new StringBuilder(element + "," + i + ",");
-                        for (int k = index - counter + 1; k <= index; k++) {
-                            position.append(k).append(",");
-                        }
-                        position.deleteCharAt(position.length() - 1);
-                        for (int k = index - counter + 1; k <= index; k++) {
-                            enemyShipsLabel[i][k] = new Label();
-                            enemyShipsLabel[i][k].setPrefSize(30, 30);
-                            enemyShipsLabel[i][k].setAlignment(Pos.CENTER);
-                            enemyShipsLabel[i][k].setOpacity(0);
-                            enemyShipsLabel[i][k].setText(String.valueOf(position));
-                        }
-                    }
-                    element = enemyShips[i][j];
-                    counter = 1;
-                }
-            }
-        }
-        return enemyShipsLabel;
     }
 
     void enemyField() throws URISyntaxException {
@@ -185,11 +126,11 @@ public class BattleWindowController {
                             turn[1] = false;
                             //setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
                         } else if (Objects.equals(labelValue, "2")) {
-                            if (isBroken(label.getText(), enemyShipsLabel)) {
+                            if (Ship.isBroken(label.getText(), enemyShipsLabel)) {
                                 brokenShipAudio.sound();
                                 enemyShipsLabel[row][column + 1].setGraphic(null);
                                 enemyShipsLabel[row][column].setGraphic(new ImageView(twoDeskHit));
-                                setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                                GridPaneControl.setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
                             } else {
                                 hitShipAudio.sound();
                                 label.setGraphic(new ImageView(hitShip));
@@ -199,12 +140,12 @@ public class BattleWindowController {
                             turn[0] = true;
                             turn[1] = false;
                         } else if (Objects.equals(labelValue, "3")) {
-                            if (isBroken(label.getText(), enemyShipsLabel)) {
+                            if (Ship.isBroken(label.getText(), enemyShipsLabel)) {
                                 brokenShipAudio.sound();
                                 enemyShipsLabel[row][column + 1].setGraphic(null);
                                 enemyShipsLabel[row][column + 2].setGraphic(null);
                                 enemyShipsLabel[row][column].setGraphic(new ImageView(threeDeskHit));
-                                setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                                GridPaneControl.setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
                             } else {
                                 hitShipAudio.sound();
                                 label.setGraphic(new ImageView(hitShip));
@@ -214,13 +155,13 @@ public class BattleWindowController {
                             turn[0] = true;
                             turn[1] = false;
                         } else if (Objects.equals(labelValue, "4")) {
-                            if (isBroken(label.getText(), enemyShipsLabel)) {
+                            if (Ship.isBroken(label.getText(), enemyShipsLabel)) {
                                 brokenShipAudio.sound();
                                 enemyShipsLabel[row][column + 1].setGraphic(null);
                                 enemyShipsLabel[row][column + 2].setGraphic(null);
                                 enemyShipsLabel[row][column + 3].setGraphic(null);
                                 enemyShipsLabel[row][column].setGraphic(new ImageView(fourDeskHit));
-                                setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
+                                GridPaneControl.setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
                             } else {
                                 hitShipAudio.sound();
                                 label.setGraphic(new ImageView(hitShip));
@@ -265,80 +206,11 @@ public class BattleWindowController {
         }
     }
 
-    private boolean isBroken(String stringShipInfo, Label[][] enemyShipsLabel) {
-        String[] shipInfo = stringShipInfo.split(",");
-        int counter = 1;
-        int row = Integer.parseInt(shipInfo[1]);
-        for (int j = 2; j < shipInfo.length; j++) {
-            if (enemyShipsLabel[row][Integer.parseInt(shipInfo[j])].getGraphic() != null) {
-                counter++;
-            }
-        }
-        return counter == Integer.parseInt(shipInfo[0]);
-    }
 
     private Path getAudioPath(String name) throws URISyntaxException {
         URL url = Application.class.getResource(name);
         return Paths.get(Objects.requireNonNull(url).toURI());
     }
 
-    private void setEmptyImageLeft(int row, int column, Label[][] enemyShipsLabel, Image emptyCell) {
-        if (column > 0) {
-            for (int i = 0; i < 3; i++) {
-                if (!((i == 0 && row == 0) || (i == 2 && row == 9))) {
-                    enemyShipsLabel[row + i - 1][column - 1].setText(null);
-                    enemyShipsLabel[row + i - 1][column - 1].setGraphic(new ImageView(emptyCell));
-                    enemyShipsLabel[row + i - 1][column - 1].setOpacity(1);
-                }
-            }
-        }
-    }
-
-    private void setEmptyImageRight(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
-        if (column + length <= 9) {
-            for (int i = 0; i < 3; i++) {
-                if (!((i == 0 && row == 0) || (i == 2 && row == 9))) {
-                    enemyShipsLabel[row + i - 1][column + length].setText(null);
-                    enemyShipsLabel[row + i - 1][column + length].setGraphic(new ImageView(emptyCell));
-                    enemyShipsLabel[row + i - 1][column + length].setOpacity(1);
-                }
-            }
-        }
-    }
-
-    private void setEmptyImageUnder(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
-        if (row < 9) {
-            for (int i = 0; i < length; i++) {
-                enemyShipsLabel[row + 1][column + i].setText(null);
-                enemyShipsLabel[row + 1][column + i].setGraphic(new ImageView(emptyCell));
-                enemyShipsLabel[row + 1][column + i].setOpacity(1);
-            }
-        }
-    }
-
-    private void setEmptyImageOver(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
-        if (row > 0) {
-            for (int i = 0; i < length; i++) {
-                enemyShipsLabel[row - 1][column + i].setText(null);
-                enemyShipsLabel[row - 1][column + i].setGraphic(new ImageView(emptyCell));
-                enemyShipsLabel[row - 1][column + i].setOpacity(1);
-            }
-        }
-    }
-
-    private void setEmptyImage(int row, int column, int length, Label[][] enemyShipsLabel, Image emptyCell) {
-        setEmptyImageLeft(row, column, enemyShipsLabel, emptyCell);
-        setEmptyImageRight(row, column, length, enemyShipsLabel, emptyCell);
-        setEmptyImageUnder(row, column, length, enemyShipsLabel, emptyCell);
-        setEmptyImageOver(row, column, length, enemyShipsLabel, emptyCell);
-    }
-
-    private static void pause(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            System.err.format("IOException: %s%n", e);
-        }
-    }
 
 }
