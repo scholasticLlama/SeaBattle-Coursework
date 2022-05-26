@@ -1,0 +1,39 @@
+.anchorPane {
+    -fx-background-image: url("../photo/ResultWindowBackground.png");
+}
+
+.menuButton {
+    -fx-background-image: url("../photo/MenuButton.png");
+}
+
+.menuButton:hover {
+    -fx-background-image: url("../photo/MenuButtonHover.png");
+}
+
+.menuButton:pressed {
+    -fx-background-image: url("../photo/MenuButtonPressed.png");
+}
+
+.tryAgainButton {
+    -fx-background-image: url("../photo/TryAgainButton.png");
+}
+
+.tryAgainButton:hover {
+    -fx-background-image: url("../photo/TryAgainButtonHover.png");
+}
+
+.tryAgainButton:pressed {
+    -fx-background-image: url("../photo/TryAgainButtonPressed.png");
+}
+
+.minimizeButton {
+    -fx-background-image: url("../photo/Minimize_Button.png");
+}
+
+.minimizeButton:hover {
+    -fx-background-image: url("../photo/Minimize_Button_Hover.png");
+}
+
+.minimizeButton:pressed {
+    -fx-background-image: url("../photo/Minimize_Button_Pressed.png");
+}
