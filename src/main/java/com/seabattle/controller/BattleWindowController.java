@@ -249,6 +249,7 @@ public class BattleWindowController {
     private void setElementsWithDelay(ArrayList<Integer[]> position, ArrayList<Label> labels, ArrayList<Audio> sounds) {
         if (Objects.equals(threadId, "null")) {
             enemyFieldGrid.setDisable(true);
+            String finalUrl = Objects.requireNonNull(Application.class.getResource("resource/photo/HitCell.png")).toExternalForm();
             thread = new Thread(() -> {
                 for (int i = 0; i < labels.size(); i++) {
                     int finalI = i;
@@ -261,13 +262,16 @@ public class BattleWindowController {
                     }
                     Platform.runLater(() -> {
                         myFieldGrid.add(labels.get(finalI), position.get(finalI)[1],  position.get(finalI)[0]);
+                        ImageView imageView = (ImageView) labels.get(finalI).getGraphic();
+                        if (Objects.equals(imageView.getImage().getUrl(),finalUrl)) {
+                            Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid);
+                        }
                         sounds.get(finalI).sound();
                     });
                     if (i == labels.size() - 1) {
                         turn[0] = true;
                         setMoveImage(true);
                         threadId = "null";
-                        Platform.runLater(() -> Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid));
                         enemyFieldGrid.setDisable(false);
                         if (myShipsLeft == 0 || enemyShipsLeft == 0) {
                             Platform.runLater(this::resultWindow);
