@@ -47,18 +47,27 @@ public class ResultWindow extends Application {
         captionLabel.setFont(Font.font("Calibri", FontWeight.BOLD, FontPosture.REGULAR, 36));
         captionLabel.setStyle("-fx-text-fill:#1f39be;");
 
-        String text = resultText + "\n" + "Ви зробили " + amountOfShoot + " пострілів" + "\n" + "Гра тривала " + time;
-
         Label textLabel = new Label();
-        textLabel.setPrefSize(580, 180);
+        textLabel.setPrefSize(580, 100);
         textLabel.setLayoutX(10);
-        textLabel.setLayoutY(70);
+        textLabel.setLayoutY(80);
         textLabel.setWrapText(true);
         textLabel.setTextAlignment(TextAlignment.CENTER);
         textLabel.setAlignment(Pos.CENTER);
-        textLabel.setText(text);
+        textLabel.setText(resultText);
         textLabel.setFont(Font.font("Calibri", FontPosture.REGULAR, 28));
         textLabel.setStyle("-fx-text-fill:#00072c;");
+
+        Label infoLabel = new Label();
+        infoLabel.setPrefSize(580, 100);
+        infoLabel.setLayoutX(10);
+        infoLabel.setLayoutY(157);
+        infoLabel.setWrapText(true);
+        infoLabel.setTextAlignment(TextAlignment.CENTER);
+        infoLabel.setAlignment(Pos.CENTER);
+        infoLabel.setText("Ви зробили: " + amountOfShoot + " пострілів. " + "Гра тривала " + time);
+        infoLabel.setFont(Font.font("Calibri", FontPosture.REGULAR, 28));
+        infoLabel.setStyle("-fx-text-fill:#00072c;");
 
         Label minimizeButton = new Label();
         minimizeButton.setPrefSize(50, 50);
@@ -121,6 +130,7 @@ public class ResultWindow extends Application {
         root.getChildren().add(menuButton);
         root.getChildren().add(tryAgainButton);
         root.getChildren().add(textLabel);
+        root.getChildren().add(infoLabel);
         root.setPrefSize(600, 350);
         root.getStyleClass().add("anchorPane");
         root.getStylesheets().add(Objects.requireNonNull(InfoWindow.class.getResource("resource/css/ResultWindow.css")).toExternalForm());

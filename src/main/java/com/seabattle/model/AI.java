@@ -10,7 +10,7 @@ public class AI {
     public final ArrayList<String> shots = new ArrayList<>();
     public final ArrayList<String> brokenShips = new ArrayList<>();
     private boolean shiftRight = true;
-    private int shipsLeft;
+    public int shipsLeft;
     private int steps;
 
     public AI(int[][] field) {

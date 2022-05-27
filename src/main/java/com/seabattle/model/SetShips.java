@@ -8,11 +8,14 @@ import javafx.scene.layout.GridPane;
 
 public class SetShips {
     public static void setEnemyShips(Label[][] enemyShipsLabel) {
-        RandomSetting randomSetting = new RandomSetting();
-        randomSetting.fillArraysWithDefault();
+        RandomSetting randomSetting;
         do {
-            randomSetting.setShips();
-        } while (randomSetting.ships.size() > 0 && !randomSetting.isFull);
+            randomSetting = new RandomSetting();
+            randomSetting.fillArraysWithDefault();
+            do {
+                randomSetting.setShips();
+            } while (randomSetting.ships.size() > 0 && !randomSetting.isFull);
+        } while (randomSetting.isFull);
         int[][] enemyShips = randomSetting.field;
         for (int i = 0; i < enemyShipsLabel.length; i++) {
             for (int j = 0; j < enemyShipsLabel[i].length; j++) {

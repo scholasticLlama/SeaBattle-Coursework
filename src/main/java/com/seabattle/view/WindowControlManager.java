@@ -125,11 +125,14 @@ public class WindowControlManager {
             Image[] images = new Image[] {oneShipImage, twoShipImage, threeShipImage, fourShipImage};
 
             int[][] myShips;
-            RandomSetting randomSetting = new RandomSetting();
-            randomSetting.fillArraysWithDefault();
+            RandomSetting randomSetting;
             do {
-                randomSetting.setShips();
-            } while (randomSetting.ships.size() > 0 && !randomSetting.isFull);
+                randomSetting = new RandomSetting();
+                randomSetting.fillArraysWithDefault();
+                do {
+                    randomSetting.setShips();
+                } while (randomSetting.ships.size() > 0 && !randomSetting.isFull);
+            } while (randomSetting.isFull);
             myShips = randomSetting.field;
 
             int shift = 0;

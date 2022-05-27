@@ -1,8 +1,12 @@
 package com.seabattle.controller;
 
-import com.seabattle.model.*;
+import com.seabattle.model.AI;
+import com.seabattle.model.GridPaneControl;
+import com.seabattle.model.SetShips;
+import com.seabattle.model.Ship;
 import com.seabattle.view.Application;
 import com.seabattle.view.Audio;
+import com.seabattle.view.ResultWindow;
 import com.seabattle.view.WindowControlManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -10,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +48,11 @@ public class BattleWindowController {
     @FXML
     private ImageView whoseMoveImage;
 
-    private final boolean[] turn = new boolean[] {true};
+    private AI ai;
+    private int enemyShipsLeft;
+    private long startTime;
+    private int amountOfShot = 0;
+    private final boolean[] turn = new boolean[]{true};
     private final Label[][] enemyShipsLabel = new Label[10][10];
     private final Label[][] myShipsLabel = new Label[10][10];
     private final int[][] myField = new int[10][10];
@@ -54,10 +63,9 @@ public class BattleWindowController {
         Image twoShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H.png")).toExternalForm());
         Image threeShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_3x1_H.png")).toExternalForm());
         Image fourShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_4x1_H.png")).toExternalForm());
-        Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
-        whoseMoveImage.setImage(myMoveArrowImage);
+        setMoveImage(turn[0]);
 
-        Image[] images = new Image[] {oneShipImage, twoShipImage, threeShipImage, fourShipImage};
+        Image[] images = new Image[]{oneShipImage, twoShipImage, threeShipImage, fourShipImage};
 
         URL url = Application.class.getResource("resource/file/fieldInArray");
         Path path = Paths.get(Objects.requireNonNull(url).toURI());
@@ -65,8 +73,11 @@ public class BattleWindowController {
 
         Ship.getMyShips(myField, file, myFieldGrid, images);
         SetShips.setEnemyShips(enemyShipsLabel);
+        enemyShipsLeft = 10;
 
+        ai = new AI(myField);
         enemyField();
+        startTime = System.currentTimeMillis();
 
         WindowControlManager.closeWindow(closeWindowButton);
         WindowControlManager.minimizeWindow(minimizeWindowButton);
@@ -82,12 +93,9 @@ public class BattleWindowController {
         Image twoDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H_B.png")).toExternalForm());
         Image threeDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_3x1_H_B.png")).toExternalForm());
         Image fourDeskHit = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_4x1_H_B.png")).toExternalForm());
-        Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
-        Image enemyMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EnemyMoveArrow.png")).toExternalForm());
         Audio emptyCellAudio = new Audio(String.valueOf(getFilePath("resource/sound/EmptyCell.wav")));
         Audio hitShipAudio = new Audio(String.valueOf(getFilePath("resource/sound/HitShip.wav")));
         Audio brokenShipAudio = new Audio(String.valueOf(getFilePath("resource/sound/BrokenShip.wav")));
-        AI ai = new AI(myField);
         for (int i = 0; i < enemyFieldGrid.getRowCount(); i++) {
             for (int j = 0; j < enemyFieldGrid.getColumnCount(); j++) {
                 Label labelGraphic = enemyShipsLabel[i][j];
@@ -104,18 +112,22 @@ public class BattleWindowController {
                             column = Integer.parseInt(stringShipInfo[2]);
                         }
                         if (Objects.equals(labelValue, "-1")) {
+                            amountOfShot++;
                             emptyCellAudio.sound();
                             label.setText(null);
                             label.setGraphic(new ImageView(emptyCell));
                             label.setOpacity(1);
                             turn[0] = false;
                         } else if (Objects.equals(labelValue, "0")) {
+                            amountOfShot++;
                             emptyCellAudio.sound();
                             label.setText(null);
                             label.setGraphic(new ImageView(emptyCell));
                             label.setOpacity(1);
                             turn[0] = false;
                         } else if (Objects.equals(labelValue, "1")) {
+                            amountOfShot++;
+                            enemyShipsLeft--;
                             brokenShipAudio.sound();
                             label.setText(null);
                             label.setGraphic(new ImageView(oneDeskHit));
@@ -123,7 +135,9 @@ public class BattleWindowController {
                             GridPaneControl.setEmptyImage(row, column, Integer.parseInt(labelValue), enemyShipsLabel, emptyCell);
                             turn[0] = true;
                         } else if (Objects.equals(labelValue, "2")) {
+                            amountOfShot++;
                             if (Ship.isBroken(label.getText(), enemyShipsLabel)) {
+                                enemyShipsLeft--;
                                 brokenShipAudio.sound();
                                 enemyShipsLabel[row][column + 1].setGraphic(null);
                                 enemyShipsLabel[row][column].setGraphic(new ImageView(twoDeskHit));
@@ -136,7 +150,9 @@ public class BattleWindowController {
                             label.setOpacity(1);
                             turn[0] = true;
                         } else if (Objects.equals(labelValue, "3")) {
+                            amountOfShot++;
                             if (Ship.isBroken(label.getText(), enemyShipsLabel)) {
+                                enemyShipsLeft--;
                                 brokenShipAudio.sound();
                                 enemyShipsLabel[row][column + 1].setGraphic(null);
                                 enemyShipsLabel[row][column + 2].setGraphic(null);
@@ -150,7 +166,9 @@ public class BattleWindowController {
                             label.setOpacity(1);
                             turn[0] = true;
                         } else if (Objects.equals(labelValue, "4")) {
+                            amountOfShot++;
                             if (Ship.isBroken(label.getText(), enemyShipsLabel)) {
+                                enemyShipsLeft--;
                                 brokenShipAudio.sound();
                                 enemyShipsLabel[row][column + 1].setGraphic(null);
                                 enemyShipsLabel[row][column + 2].setGraphic(null);
@@ -166,14 +184,22 @@ public class BattleWindowController {
                             turn[0] = true;
                         }
                     }
-                    if (turn[0]) {
-                        whoseMoveImage.setImage(myMoveArrowImage);
+                    if (ai.shipsLeft > 0 && enemyShipsLeft > 0) {
+                        if (turn[0]) {
+                            setMoveImage(true);
+                        } else {
+                            setMoveImage(false);
+                            ai.newShot();
+                            aiShotSetImage(ai.shots, ai.brokenShips);
+                            ai.shots.clear();
+                            turn[0] = true;
+                            setMoveImage(true);
+                            if (ai.shipsLeft == 0 || enemyShipsLeft == 0) {
+                                resultWindow();
+                            }
+                        }
                     } else {
-                        whoseMoveImage.setImage(enemyMoveArrowImage);
-                        ai.newShot();
-                        aiShotSetImage(ai.shots, ai.brokenShips);
-                        ai.shots.clear();
-                        turn[0] = true;
+                        resultWindow();
                     }
                 });
 
@@ -192,30 +218,54 @@ public class BattleWindowController {
             label.setPrefSize(30, 30);
             if (myField[row][column] > 0) {
                 label.setGraphic(new ImageView(hitShip));
+                if (brokenShips.size() > 0) {
+                    for (String brokenShip : brokenShips) {
+                        String[] brokenShipInfoArray = brokenShip.split(",");
+                        int length = Integer.parseInt(brokenShipInfoArray[0]);
+                        int rowBroken = Integer.parseInt(brokenShipInfoArray[1]);
+                        int columnBroken = Integer.parseInt(brokenShipInfoArray[2]);
+                        GridPaneControl.clearGraphicInArray(myShipsLabel);
+                        GridPaneControl.setEmptyImage(rowBroken, columnBroken, length, myShipsLabel, emptyCell);
+                        GridPaneControl.setLabelsToGridPane(myFieldGrid, myShipsLabel);
+                    }
+                    brokenShips.clear();
+                }
             } else {
                 label.setGraphic(new ImageView(emptyCell));
             }
             myFieldGrid.add(label, column, row);
         }
-        if (brokenShips.size() > 0) {
-            for (String brokenShip : brokenShips) {
-                String[] brokenShipInfoArray = brokenShip.split(",");
-                int length = Integer.parseInt(brokenShipInfoArray[0]);
-                int row = Integer.parseInt(brokenShipInfoArray[1]);
-                int column = Integer.parseInt(brokenShipInfoArray[2]);
-                GridPaneControl.clearGraphicInArray(myShipsLabel);
-                GridPaneControl.setEmptyImage(row, column, length, myShipsLabel, emptyCell);
-                GridPaneControl.setLabelsToGridPane(myFieldGrid, myShipsLabel);
-            }
-            brokenShips.clear();
-        }
     }
 
+    private void setMoveImage(boolean myMove) {
+        Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
+        Image enemyMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EnemyMoveArrow.png")).toExternalForm());
+        if (myMove) whoseMoveImage.setImage(myMoveArrowImage);
+        else whoseMoveImage.setImage(enemyMoveArrowImage);
+    }
 
     private Path getFilePath(String name) throws URISyntaxException {
         URL url = Application.class.getResource(name);
         return Paths.get(Objects.requireNonNull(url).toURI());
     }
 
+    private void resultWindow() {
+        long endTime = System.currentTimeMillis();
+        long allTime = (endTime - startTime) / 1000;
+        String time = "";
+        if (allTime > 60) {
+            time = allTime/60 + " хв. ";
+            allTime = allTime - (allTime/60) * 60;
+        }
+        time += allTime + " сек.";
+        String caption = (ai.shipsLeft == 0)? "Ви програли" : "Ви перемогли";
+        String text = (ai.shipsLeft == 0)? "Яка поразка...Мастросе, Вас переміг Штучний інтелект." : "Матросе! Вітаю Вас з черговим яскравим досягненням.";
+        ResultWindow resultWindow = new ResultWindow(time, String.valueOf(amountOfShot), text, caption, (Stage) menuBar.getScene().getWindow());
+        try {
+            resultWindow.start(new Stage());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
