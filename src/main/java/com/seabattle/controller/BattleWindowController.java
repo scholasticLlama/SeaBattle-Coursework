@@ -53,6 +53,7 @@ public class BattleWindowController {
     Thread thread;
     String threadId = "null";
     private int enemyShipsLeft;
+    private int myShipsLeft;
     private long startTime;
     private int amountOfShot = 0;
     private final boolean[] turn = new boolean[]{true};
@@ -194,9 +195,7 @@ public class BattleWindowController {
                             setMoveImage(false);
                             ai.newShot();
                             aiShotSetImage(ai.shots);
-                            if (ai.shipsLeft == 0 || enemyShipsLeft == 0) {
-                                resultWindow();
-                            }
+                            myShipsLeft = ai.shipsLeft;
                         }
                     } else {
                         resultWindow();
@@ -210,8 +209,17 @@ public class BattleWindowController {
     private void aiShotSetImage(ArrayList<String> shots) {
         Image hitShip = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/HitCell.png")).toExternalForm());
         Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
+        Audio emptyCellAudio = null;
+        Audio hitShipAudio = null;
+        try {
+            emptyCellAudio = new Audio(String.valueOf(getFilePath("resource/sound/EmptyCell.wav")));
+            hitShipAudio = new Audio(String.valueOf(getFilePath("resource/sound/HitShip.wav")));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         ArrayList<Label> labels = new ArrayList<>();
         ArrayList<Integer[]> positions = new ArrayList<>();
+        ArrayList<Audio> sounds = new ArrayList<>();
         for (String shot : shots) {
             int row = Integer.parseInt(shot) / 10;
             int column = Integer.parseInt(shot) - row * 10;
@@ -219,14 +227,16 @@ public class BattleWindowController {
             label.setPrefSize(30, 30);
             if (myField[row][column] > 0) {
                 label.setGraphic(new ImageView(hitShip));
+                sounds.add(hitShipAudio);
             } else {
                 label.setGraphic(new ImageView(emptyCell));
+                sounds.add(emptyCellAudio);
             }
             labels.add(label);
             positions.add(new Integer[] {row, column});
         }
         ai.shots.clear();
-        setElementsWithDelay(positions, labels);
+        setElementsWithDelay(positions, labels, sounds);
     }
 
     private void setMoveImage(boolean myMove) {
@@ -236,31 +246,32 @@ public class BattleWindowController {
         else whoseMoveImage.setImage(enemyMoveArrowImage);
     }
 
-    private Path getFilePath(String name) throws URISyntaxException {
-        URL url = Application.class.getResource(name);
-        return Paths.get(Objects.requireNonNull(url).toURI());
-    }
-
-    private void setElementsWithDelay(ArrayList<Integer[]> position, ArrayList<Label> labels) {
+    private void setElementsWithDelay(ArrayList<Integer[]> position, ArrayList<Label> labels, ArrayList<Audio> sounds) {
         if (Objects.equals(threadId, "null")) {
             enemyFieldGrid.setDisable(true);
             thread = new Thread(() -> {
                 for (int i = 0; i < labels.size(); i++) {
                     int finalI = i;
-                    Platform.runLater(() -> myFieldGrid.add(labels.get(finalI), position.get(finalI)[1],  position.get(finalI)[0]));
                     threadId = String.valueOf(thread.getId());
-                    int delay = (int) ((Math.random() * (1500 - 700)) + 700);
+                    int delay = (int) ((Math.random() * (1700 - 700)) + 700);
                     try{
                         Thread.sleep(delay);
                     }catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    Platform.runLater(() -> {
+                        myFieldGrid.add(labels.get(finalI), position.get(finalI)[1],  position.get(finalI)[0]);
+                        sounds.get(finalI).sound();
+                    });
                     if (i == labels.size() - 1) {
                         turn[0] = true;
                         setMoveImage(true);
                         threadId = "null";
                         Platform.runLater(() -> Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid));
                         enemyFieldGrid.setDisable(false);
+                        if (myShipsLeft == 0 || enemyShipsLeft == 0) {
+                            Platform.runLater(this::resultWindow);
+                        }
                     }
                 }
             });
@@ -285,6 +296,11 @@ public class BattleWindowController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    private Path getFilePath(String name) throws URISyntaxException {
+        URL url = Application.class.getResource(name);
+        return Paths.get(Objects.requireNonNull(url).toURI());
     }
 
 }
