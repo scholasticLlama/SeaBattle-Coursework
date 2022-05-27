@@ -8,6 +8,7 @@ import com.seabattle.view.Application;
 import com.seabattle.view.Audio;
 import com.seabattle.view.ResultWindow;
 import com.seabattle.view.WindowControlManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -49,6 +50,8 @@ public class BattleWindowController {
     private ImageView whoseMoveImage;
 
     private AI ai;
+    Thread thread;
+    String threadId = "null";
     private int enemyShipsLeft;
     private long startTime;
     private int amountOfShot = 0;
@@ -190,10 +193,7 @@ public class BattleWindowController {
                         } else {
                             setMoveImage(false);
                             ai.newShot();
-                            aiShotSetImage(ai.shots, ai.brokenShips);
-                            ai.shots.clear();
-                            turn[0] = true;
-                            setMoveImage(true);
+                            aiShotSetImage(ai.shots);
                             if (ai.shipsLeft == 0 || enemyShipsLeft == 0) {
                                 resultWindow();
                             }
@@ -202,15 +202,16 @@ public class BattleWindowController {
                         resultWindow();
                     }
                 });
-
                 enemyFieldGrid.add(enemyShipsLabel[i][j], j, i);
             }
         }
     }
 
-    private void aiShotSetImage(ArrayList<String> shots, ArrayList<String> brokenShips) {
+    private void aiShotSetImage(ArrayList<String> shots) {
         Image hitShip = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/HitCell.png")).toExternalForm());
         Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
+        ArrayList<Label> labels = new ArrayList<>();
+        ArrayList<Integer[]> positions = new ArrayList<>();
         for (String shot : shots) {
             int row = Integer.parseInt(shot) / 10;
             int column = Integer.parseInt(shot) - row * 10;
@@ -218,23 +219,14 @@ public class BattleWindowController {
             label.setPrefSize(30, 30);
             if (myField[row][column] > 0) {
                 label.setGraphic(new ImageView(hitShip));
-                if (brokenShips.size() > 0) {
-                    for (String brokenShip : brokenShips) {
-                        String[] brokenShipInfoArray = brokenShip.split(",");
-                        int length = Integer.parseInt(brokenShipInfoArray[0]);
-                        int rowBroken = Integer.parseInt(brokenShipInfoArray[1]);
-                        int columnBroken = Integer.parseInt(brokenShipInfoArray[2]);
-                        GridPaneControl.clearGraphicInArray(myShipsLabel);
-                        GridPaneControl.setEmptyImage(rowBroken, columnBroken, length, myShipsLabel, emptyCell);
-                        GridPaneControl.setLabelsToGridPane(myFieldGrid, myShipsLabel);
-                    }
-                    brokenShips.clear();
-                }
             } else {
                 label.setGraphic(new ImageView(emptyCell));
             }
-            myFieldGrid.add(label, column, row);
+            labels.add(label);
+            positions.add(new Integer[] {row, column});
         }
+        ai.shots.clear();
+        setElementsWithDelay(positions, labels);
     }
 
     private void setMoveImage(boolean myMove) {
@@ -247,6 +239,33 @@ public class BattleWindowController {
     private Path getFilePath(String name) throws URISyntaxException {
         URL url = Application.class.getResource(name);
         return Paths.get(Objects.requireNonNull(url).toURI());
+    }
+
+    private void setElementsWithDelay(ArrayList<Integer[]> position, ArrayList<Label> labels) {
+        if (Objects.equals(threadId, "null")) {
+            enemyFieldGrid.setDisable(true);
+            thread = new Thread(() -> {
+                for (int i = 0; i < labels.size(); i++) {
+                    int finalI = i;
+                    Platform.runLater(() -> myFieldGrid.add(labels.get(finalI), position.get(finalI)[1],  position.get(finalI)[0]));
+                    threadId = String.valueOf(thread.getId());
+                    int delay = (int) ((Math.random() * (1500 - 700)) + 700);
+                    try{
+                        Thread.sleep(delay);
+                    }catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (i == labels.size() - 1) {
+                        turn[0] = true;
+                        setMoveImage(true);
+                        threadId = "null";
+                        Platform.runLater(() -> Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid));
+                        enemyFieldGrid.setDisable(false);
+                    }
+                }
+            });
+            thread.start();
+        } else enemyFieldGrid.setDisable(true);
     }
 
     private void resultWindow() {

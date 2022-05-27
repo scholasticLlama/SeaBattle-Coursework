@@ -61,12 +61,12 @@ public class ResultWindow extends Application {
         Label infoLabel = new Label();
         infoLabel.setPrefSize(580, 100);
         infoLabel.setLayoutX(10);
-        infoLabel.setLayoutY(157);
+        infoLabel.setLayoutY(160);
         infoLabel.setWrapText(true);
         infoLabel.setTextAlignment(TextAlignment.CENTER);
         infoLabel.setAlignment(Pos.CENTER);
         infoLabel.setText("Ви зробили: " + amountOfShoot + " пострілів. " + "Гра тривала " + time);
-        infoLabel.setFont(Font.font("Calibri", FontPosture.REGULAR, 28));
+        infoLabel.setFont(Font.font("Calibri", FontPosture.REGULAR, 24));
         infoLabel.setStyle("-fx-text-fill:#00072c;");
 
         Label minimizeButton = new Label();

@@ -18,7 +18,6 @@ public class AI {
         shipsLeft = 10;
         steps = 0;
         fillCellsDefault();
-        System.out.println(startShots);
     }
 
     private void fillCellsDefault() {
@@ -35,13 +34,11 @@ public class AI {
     }
 
     public void newShot() {
-        System.out.println("newShot " + startShots.size() + " " + cells.size());
         if (currentShip.size() == 0) shootTillHit();
         else continueSinkTheShip();
     }
 
     public boolean isHit(int row, int column) {
-        System.out.println("boolean " + (field[row][column] >= 1));
         steps++;
         cells.remove(String.valueOf(row * 10 + column));
         startShots.remove(String.valueOf(row * 10 + column));
@@ -63,7 +60,6 @@ public class AI {
         int column = Integer.parseInt(position) - row * 10;
         //startShots.remove(position);
         //cells.remove(position);
-        System.out.println("row " + row + ", " + column + " str " + position);
         if (isHit(row, column)) {
             sinkTheShip(row, column);
         }
@@ -73,20 +69,15 @@ public class AI {
         currentShip.add(String.valueOf(row * 10 + column));
         //startShots.remove(String.valueOf(row * 10 + column));
         //cells.remove(String.valueOf(row * 10 + column));
-        System.out.println(currentShip + " currentShip; " + currentShip.size() + " " + field[row][column]);
         if (currentShip.size() == field[row][column]) {
             deleteEmptyCellsAroundShip();
             addBrokenShip(currentShip, brokenShips);
             currentShip.clear();
             shipsLeft--;
             shiftRight = true;
-            System.out.println("shipsLeft " + shipsLeft);
             if (shipsLeft > 0) newShot();
-            else System.out.println("all ships sunk");
         } else {
-            System.out.println("shiftRight " + shiftRight);
             if (shiftRight) {
-                System.out.println("contains " + cells.contains(String.valueOf(row * 10 + (column + 1))));
                 if (column < 9 && cells.contains(String.valueOf(row * 10 + (column + 1)))) moveRight(row, column);
                 else {
                     shiftRight = false;
@@ -116,7 +107,6 @@ public class AI {
         if (row > 0) {
             for (int i = 0; i < currentShip.size(); i++) {
                 String position = String.valueOf((row - 1) * 10 + column + i);
-                System.out.println("position over " + position);
                 startShots.remove(position);
                 cells.remove(position);
             }
@@ -127,7 +117,6 @@ public class AI {
         if (row < 9) {
             for (int i = 0; i < currentShip.size(); i++) {
                 String position = String.valueOf((row + 1) * 10 + column + i);
-                System.out.println("position under " + position);
                 startShots.remove(position);
                 cells.remove(position);
             }
@@ -139,7 +128,6 @@ public class AI {
             for (int i = 0; i < 3; i++) {
                 if (!((i == 0 && row == 0) || (i == 2 && row == 9))){
                     String position = String.valueOf((row - 1 + i) * 10 + column - 1);
-                    System.out.println("position left " + position);
                     startShots.remove(position);
                     cells.remove(position);
                 }
@@ -152,7 +140,6 @@ public class AI {
             for (int i = 0; i < 3; i++) {
                 if (!((i == 0 && row == 0) || (i == 2 && row == 9))) {
                     String position = String.valueOf((row - 1 + i) * 10 + column + currentShip.size());
-                    System.out.println("position right " + position);
                     startShots.remove(position);
                     cells.remove(position);
                 }
@@ -161,7 +148,6 @@ public class AI {
     }
 
     public void moveRight(int row, int column) {
-        System.out.println("moveRight");
         if (column < 9) {
             if (isHit(row, column + 1)) {
                 sinkTheShip(row, column + 1);
@@ -170,7 +156,6 @@ public class AI {
     }
 
     public void moveLeft(int row, int column) {
-        System.out.println("moveLeft");
         if (column > 0) {
             if (isHit(row, column - 1)) {
                 sinkTheShip(row, column - 1);
@@ -179,7 +164,6 @@ public class AI {
     }
 
     public void continueSinkTheShip() {
-        System.out.println("continueSinkTheShip");
         int row = Integer.parseInt(currentShip.get(0)) / 10;
         int column = Integer.parseInt(currentShip.get(0)) - row * 10;
         moveLeft(row, column);
