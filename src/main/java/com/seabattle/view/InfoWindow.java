@@ -21,8 +21,6 @@ import java.util.Objects;
 /**
  * A class that creates an information window that can be used to display errors, warnings, or tips.
  * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
- * @author Yaroslava Nehrych
  */
 public class InfoWindow extends Application {
     String errorMassage;

@@ -21,8 +21,6 @@ import java.util.Objects;
 /**
  * This class creates a window for displaying the results of the game.
  * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
- * @author Yaroslava Nehrych
  */
 public class ResultWindow extends Application {
     String time;

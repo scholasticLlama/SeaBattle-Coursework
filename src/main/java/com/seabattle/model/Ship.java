@@ -15,7 +15,19 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Class contains methods defines actions with ships
+ * @author Yaroslava Kozhemiako
+ */
 public class Ship {
+    /**
+     * get ships wrote in file and set corresponding images on its place
+     * @param field field to fill with information of file
+     * @param file file contains information about set ships
+     * @param gridPane GridPane to set images on
+     * @param images array of ships images
+     * @throws IOException file can be not found
+     */
     public static void getMyShips(int[][] field, File file, GridPane gridPane, Image[] images) throws IOException {
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -34,6 +46,12 @@ public class Ship {
         SetShips.setMyShips(field, gridPane, images);
     }
 
+    /**
+     * convert information from GridPane with images to numbers written in file
+     * @param myField GridPane with set images
+     * @throws IOException file can be not made
+     * @throws URISyntaxException file can be not found
+     */
     public static void myFieldToLabel(GridPane myField) throws IOException, URISyntaxException {
         int[] out = new int[100];
         int index = 0;
@@ -69,6 +87,11 @@ public class Ship {
         fileWriter.close();
     }
 
+    /**
+     * check does all ships set on a grid
+     * @param gridPane GridPane with ships set as images
+     * @return whether all ships are used or not
+     */
     public static boolean isAllShipUse(GridPane gridPane) {
         int countOfDesks = 0;
         for (int i = 0; i < gridPane.getRowCount(); i++) {
@@ -83,6 +106,12 @@ public class Ship {
         return countOfDesks == 20;
     }
 
+    /**
+     * check does ship has been broken
+     * @param stringShipInfo sting contains information about number of desks, row, column of ship
+     * @param enemyShipsLabel label has image if there was shot
+     * @return whether the ship is broken or not
+     */
     public static boolean isBroken(String stringShipInfo, Label[][] enemyShipsLabel) {
         String[] shipInfo = stringShipInfo.split(",");
         int counter = 1;
@@ -95,6 +124,13 @@ public class Ship {
         return counter == Integer.parseInt(shipInfo[0]);
     }
 
+    /**
+     * calls another method if ship is broken to fill with empty cells space around the ship
+     * @param brokenShips array contains information about shots hit in ships
+     * @param myShipsLabel label contains images
+     * @param myFieldGrid GridPane contains labels with images
+     * @param amountOfHit amount of shots hit in ship
+     */
     public static void isBrokenEnemy(ArrayList<String> brokenShips, Label[][] myShipsLabel, GridPane myFieldGrid, int[] amountOfHit) {
         Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
         if (brokenShips.size() > 0) {
@@ -112,6 +148,12 @@ public class Ship {
         }
     }
 
+    /**
+     * according to the length of ship return image of the ship
+     * @param numberOfDesks length of ship
+     * @param images array with ships images
+     * @return image of the ship
+     */
     public static Image getShipImage(int numberOfDesks, Image[] images) {
         return switch (numberOfDesks) {
             case 1 -> images[0];
@@ -122,6 +164,12 @@ public class Ship {
         };
     }
 
+    /**
+     * set ship in array
+     * @param out array to fill
+     * @param counter number of desks
+     * @param lastIndex far right column of ship to set
+     */
     private static void setShip(int[] out, int counter, int lastIndex) {
         for (int i = lastIndex - counter + 1; i <= lastIndex; i++) {
             out[i] = counter;

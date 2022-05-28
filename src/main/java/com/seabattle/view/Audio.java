@@ -7,8 +7,6 @@ import javax.sound.sampled.*;
 /**
  * This class plays audio
  * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
- * @author Yaroslava Nehrych
  * @param track path to the audio file to be played
  */
 public record Audio(String track) {

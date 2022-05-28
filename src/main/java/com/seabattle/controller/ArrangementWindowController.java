@@ -23,8 +23,6 @@ import java.util.Objects;
 
 /**
  * This class processes data of the ship layout window.
- * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
  * @author Yaroslava Nehrych
  */
 public class ArrangementWindowController {

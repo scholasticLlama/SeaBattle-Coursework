@@ -2,7 +2,16 @@ package com.seabattle.model;
 
 import javafx.scene.control.Label;
 
+/**
+ * Class edits record to suitable format
+ * @author Yaroslava Kozhemiako
+ */
 public class EditPosition {
+    /**
+     * add extra information about ships
+     * @param enemyShipsLabel array to edit; add row and columns
+     * @param enemyShips enemy's field in numbers of desks
+     */
     public static void addPosition(Label[][] enemyShipsLabel, int[][] enemyShips) {
         for (int i = 0; i < enemyShips.length; i++) {
             int counter = 1;

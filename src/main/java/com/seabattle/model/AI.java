@@ -2,6 +2,10 @@ package com.seabattle.model;
 
 import java.util.ArrayList;
 
+/**
+ * Class defines model of AI moves
+ * @author Yaroslava Kozhemiako
+ */
 public class AI {
     private final int[][] field;
     private final ArrayList<String> startShots = new ArrayList<>();
@@ -11,15 +15,21 @@ public class AI {
     public final ArrayList<String> brokenShips = new ArrayList<>();
     private boolean shiftRight = true;
     public int shipsLeft;
-    private int steps;
 
+    /**
+     * Constructor
+     * @param field enemy's field to shot
+     */
     public AI(int[][] field) {
         this.field = field;
         shipsLeft = 10;
-        steps = 0;
         fillCellsDefault();
     }
 
+    /**
+     * fills cells of the field with information about its row and column;
+     * fills startShots the most likely positions of ships location
+     */
     private void fillCellsDefault() {
         boolean isSettable;
         for (int i = 0; i < 10; i++) {
@@ -33,19 +43,30 @@ public class AI {
         }
     }
 
+    /**
+     * makes new shot: if there is hit, but not broken ship, go and sink it, otherwise random shot
+     */
     public void newShot() {
         if (currentShip.size() == 0) shootTillHit();
         else continueSinkTheShip();
     }
 
+    /**
+     * check is the shot a hit or a miss
+     * @param row row of the shot
+     * @param column column of the shot
+     * @return whether it was hit or not
+     */
     public boolean isHit(int row, int column) {
-        steps++;
         cells.remove(String.valueOf(row * 10 + column));
         startShots.remove(String.valueOf(row * 10 + column));
         shots.add(String.valueOf(row * 10 + column));
         return field[row][column] >= 1;
     }
 
+    /**
+     * pseudo-random shot in free cells
+     */
     public void shootTillHit() {
         int index;
         String position;
@@ -58,17 +79,19 @@ public class AI {
         }
         int row = Integer.parseInt(position) / 10;
         int column = Integer.parseInt(position) - row * 10;
-        //startShots.remove(position);
-        //cells.remove(position);
         if (isHit(row, column)) {
             sinkTheShip(row, column);
         }
     }
 
+    /**
+     * go here, when we've got hit; if length of the ship we try to sink and number of shots are the same, we're done
+     * otherwise, move right or left to continue its sinking
+     * @param row row of the shot
+     * @param column column of the shot
+     */
     public void sinkTheShip(int row, int column) {
         currentShip.add(String.valueOf(row * 10 + column));
-        //startShots.remove(String.valueOf(row * 10 + column));
-        //cells.remove(String.valueOf(row * 10 + column));
         if (currentShip.size() == field[row][column]) {
             deleteEmptyCellsAroundShip();
             addBrokenShip(currentShip, brokenShips);
@@ -89,6 +112,9 @@ public class AI {
         }
     }
 
+    /**
+     * delete empty space around the sunken ship
+     */
     public void deleteEmptyCellsAroundShip() {
         int leftPosition = Integer.parseInt(currentShip.get(0));
         for (String position : currentShip) {
@@ -103,6 +129,11 @@ public class AI {
         deleteEmptyCellsRightwardShip(row, column);
     }
 
+    /**
+     * delete empty space above the sunken ship
+     * @param row row of the sunken ship
+     * @param column far left column of the sunken ship
+     */
     public void deleteEmptyCellsAboveShip(int row, int column) {
         if (row > 0) {
             for (int i = 0; i < currentShip.size(); i++) {
@@ -113,6 +144,11 @@ public class AI {
         }
     }
 
+    /**
+     * delete empty space under the sunken ship
+     * @param row row of the sunken ship
+     * @param column far left column of the sunken ship
+     */
     public void deleteEmptyCellsUnderShip(int row, int column) {
         if (row < 9) {
             for (int i = 0; i < currentShip.size(); i++) {
@@ -123,6 +159,11 @@ public class AI {
         }
     }
 
+    /**
+     * delete empty space leftward the sunken ship
+     * @param row row of the sunken ship
+     * @param column far left column of the sunken ship
+     */
     public void deleteEmptyCellsLeftwardShip(int row, int column) {
         if (column > 0) {
             for (int i = 0; i < 3; i++) {
@@ -135,6 +176,11 @@ public class AI {
         }
     }
 
+    /**
+     * delete empty space rightward the sunken ship
+     * @param row row of the sunken ship
+     * @param column far left column of the sunken ship
+     */
     public void deleteEmptyCellsRightwardShip(int row, int column) {
         if (column + currentShip.size() <= 9) {
             for (int i = 0; i < 3; i++) {
@@ -147,6 +193,11 @@ public class AI {
         }
     }
 
+    /**
+     * shot one cell right
+     * @param row previous shot row
+     * @param column previous shot column
+     */
     public void moveRight(int row, int column) {
         if (column < 9) {
             if (isHit(row, column + 1)) {
@@ -155,6 +206,11 @@ public class AI {
         }
     }
 
+    /**
+     * shot one cell left
+     * @param row previous shot row
+     * @param column previous shot column
+     */
     public void moveLeft(int row, int column) {
         if (column > 0) {
             if (isHit(row, column - 1)) {
@@ -163,12 +219,21 @@ public class AI {
         }
     }
 
+    /**
+     * go here, when we've got miss after hit part of a ship;
+     * continue sinking the ship by shooting one cell left
+     */
     public void continueSinkTheShip() {
         int row = Integer.parseInt(currentShip.get(0)) / 10;
         int column = Integer.parseInt(currentShip.get(0)) - row * 10;
         moveLeft(row, column);
     }
 
+    /**
+     * find far right column of the broken ship; add information about it to array
+     * @param currentShip array consist of positions of the sunken ship
+     * @param brokenShips array consist of uniq information about the sunken ships
+     */
     private void addBrokenShip(ArrayList<String> currentShip, ArrayList<String> brokenShips) {
         String position = currentShip.get(0);
         for (int i = 1; i < currentShip.size(); i++) {

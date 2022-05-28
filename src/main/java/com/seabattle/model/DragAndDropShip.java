@@ -14,9 +14,21 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Class describes drag and drop structure and related to it methods
+ * @author Yaroslava Kozhemiako
+ */
 public class DragAndDropShip {
     static HashMap<Integer, ImageView[]> outShips;
     static Label[][] outCell;
+
+    /**
+     * fill field with empty labels to set images of the ship;
+     * calls method to start drag and drop
+     * @param myField field to drop images
+     * @param imageViews array with images of ships
+     * @param emptyImage empty image to fill space where ship is
+     */
     public static void start(GridPane myField, ImageView[] imageViews, ImageView emptyImage) {
         Label[][] cell = new Label[10][10];
         outCell = cell;
@@ -37,9 +49,14 @@ public class DragAndDropShip {
         startDragAndDrop(ships, cell, emptyImage);
     }
 
+    /**
+     * call drag and drop method for each image of the ships
+     * @param ships array of images of the ships
+     * @param cell array of labels to set images on
+     * @param emptyImage empty image to fill space where ship is
+     */
     public static void startDragAndDrop(HashMap<Integer, ImageView[]> ships, Label[][] cell, ImageView emptyImage) {
         for (int i = 1; i <= ships.size(); i++) {
-            //Integer key = entry.getKey();
             ImageView[] value = ships.get(i);
             for (ImageView imageView : value) {
                 dragAndDropShip(imageView, cell, emptyImage);
@@ -47,15 +64,29 @@ public class DragAndDropShip {
         }
     }
 
+    /**
+     * Getter of field outShips
+     * @return outShips
+     */
     public static HashMap<Integer, ImageView[]> getShips() {
         return outShips;
     }
 
+    /**
+     * Getter of field outCell
+     * @return outCell
+     */
     public static Label[][] getCell() {
         return outCell;
     }
 
 
+    /**
+     * drags image and drop it on the field
+     * @param source image to drag
+     * @param targets array of labels to drop images on
+     * @param emptyImage empty image to fill space where ship is
+     */
     private static void dragAndDropShip(ImageView source, Label[][] targets, ImageView emptyImage) {
         int[] amountOfDecks = new int[1];
         Image possibleCellImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/PossibleCell.png")).toExternalForm());
@@ -65,7 +96,7 @@ public class DragAndDropShip {
             /* allow any transfer mode */
             Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 
-            /* put a string on dragboard */
+            /* put an image on dragboard */
             ClipboardContent content = new ClipboardContent();
             content.putImage(source.getImage());
             db.setContent(content);
@@ -105,7 +136,7 @@ public class DragAndDropShip {
 
                 target.setOnDragOver(event -> {
                     /* accept it only if it is  not dragged from the same node
-                     * and if it has a string data */
+                     * and if it has an image data */
                     ImageView object = (ImageView) event.getGestureSource();
                     amountOfDecks[0] = (int) object.getFitWidth() / 30;
                     if (event.getGestureSource() != target &&
@@ -171,7 +202,7 @@ public class DragAndDropShip {
                 });
 
                 target.setOnDragDropped(event -> {
-                    /* if there is a string data on dragboard, read it and use it */
+                    /* if there is an image data on dragboard, get it and use it */
                     Dragboard db = event.getDragboard();
                     boolean success = false;
                     ImageView imageView = (ImageView) target.getGraphic();
@@ -220,7 +251,7 @@ public class DragAndDropShip {
                         }
 
                     }
-                    /* let the source know whether the string was successfully
+                    /* let the source know whether the image was successfully
                      * transferred and used */
                     event.setDropCompleted(success);
 

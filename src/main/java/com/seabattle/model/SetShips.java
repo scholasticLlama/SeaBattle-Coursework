@@ -6,7 +6,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Class contains methods of setting ships on grid
+ * @author Yaroslava Kozhemiako
+ */
 public class SetShips {
+    /**
+     * automatic ships numbers set of AI field
+     * @param enemyShipsLabel label to set values of ships
+     */
     public static void setEnemyShips(Label[][] enemyShipsLabel) {
         RandomSetting randomSetting;
         do {
@@ -29,6 +37,12 @@ public class SetShips {
         EditPosition.addPosition(enemyShipsLabel, enemyShips);
     }
 
+    /**
+     * set ships images instead of ships numbers
+     * @param field field of ships fill with numbers
+     * @param gridPane GridPane to set images on
+     * @param images array of ships images
+     */
     public static void setMyShips(int[][] field, GridPane gridPane, Image[] images) {
         int shift = 0;
         for (int i = 0; i < field.length; i++) {

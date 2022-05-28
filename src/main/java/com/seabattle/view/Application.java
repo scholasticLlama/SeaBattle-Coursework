@@ -12,8 +12,6 @@ import java.util.Objects;
 /**
  * This class creates an instance of the main window, that is, the main stage on which the sub-elements will be placed.
  * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
- * @author Yaroslava Nehrych
  */
 public class Application extends javafx.application.Application {
     /**
