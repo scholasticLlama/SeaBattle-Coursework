@@ -28,6 +28,9 @@ import java.util.Objects;
 
 /**
  * A class that contains methods for managing window functions
+ * @author Kiril Vashchuk
+ * @author Yaroslava Kozhemiako
+ * @author Yaroslava Nehrych
  */
 public class WindowControlManager {
     private static double x;

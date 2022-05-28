@@ -134,7 +134,7 @@
                   <DropShadow height="15.0" radius="7.0" width="15.0" />
                </effect>
             </Label>
-            <Label layoutX="218.0" layoutY="15.0" text="Розстановка кораблів" textFill="#00007c">
+            <Label layoutX="201.0" layoutY="13.0" text="ARRANGEMENT OF SHIPS" textFill="#00007c">
                <font>
                   <Font name="Calibri Bold" size="30.0" />
                </font>

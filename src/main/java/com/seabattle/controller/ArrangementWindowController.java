@@ -115,7 +115,7 @@ public class ArrangementWindowController {
                     e.printStackTrace();
                 }
             } else {
-                String errorMassage = "Ви використали не всі кораблі! Розставте всі дані кораблі, та спробуйде ще раз.";
+                String errorMassage = "You haven't used all the ships! Arrange all these ships, and try again.";
                 InfoWindow infoWindow = new InfoWindow(errorMassage, "Помилка", (Stage) startGame.getScene().getWindow());
                 try {
                     infoWindow.start(new Stage());

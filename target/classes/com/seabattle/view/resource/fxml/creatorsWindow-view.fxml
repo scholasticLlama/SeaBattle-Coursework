@@ -10,34 +10,34 @@
    <children>
       <AnchorPane fx:id="menuBar" prefHeight="60.0" prefWidth="720.0">
          <children>
-            <Label layoutX="288.0" layoutY="11.0" text="Автори гри" textFill="#07008a">
+            <Label layoutX="235.0" layoutY="10.0" text="GAME AUTHORS" textFill="#07008a">
                <font>
                   <Font name="Calibri Bold" size="36.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="65.0" layoutY="90.0" text="Роботу виконили студенти 2-го курсу:" textFill="#01004d">
+      <Label layoutX="65.0" layoutY="90.0" text="The work was performed by 2nd year students:" textFill="#01004d">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="65.0" layoutY="150.0" text="Ващук Кирил" textFill="#01004d">
+      <Label layoutX="65.0" layoutY="150.0" text="Vashchuk Kiril" textFill="#01004d">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="65.0" layoutY="210.0" text="Кожемяко Ярослава" textFill="#01004d">
+      <Label layoutX="65.0" layoutY="210.0" text="Yaroslava Kozhemiako" textFill="#01004d">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="65.0" layoutY="270.0" text="Негрич Ярослава" textFill="#01004d">
+      <Label layoutX="65.0" layoutY="270.0" text="Yaroslava Nehrych" textFill="#01004d">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="60.0" layoutY="360.0" text="Перевірив: Антонюк Андрій Іванович" textFill="#01004d">
+      <Label layoutX="60.0" layoutY="360.0" text="Checked: Antoniuk A. I." textFill="#01004d">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
