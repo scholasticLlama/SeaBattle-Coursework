@@ -268,7 +268,7 @@ public class BattleWindowController {
                         ImageView imageView = (ImageView) labels.get(finalI).getGraphic();
                         if (Objects.equals(imageView.getImage().getUrl(),finalUrl)) {
                             Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid, finalAmountOfHit);
-                        } else amountOfHit--;
+                        } else if (amountOfHit > 0) amountOfHit--;
                         sounds.get(finalI).sound();
                     });
                     if (i == labels.size() - 1) {
@@ -291,12 +291,12 @@ public class BattleWindowController {
         long allTime = (endTime - startTime) / 1000;
         String time = "";
         if (allTime > 60) {
-            time = allTime/60 + " хв. ";
+            time = allTime/60 + " min. ";
             allTime = allTime - (allTime/60) * 60;
         }
-        time += allTime + " сек.";
-        String caption = (ai.shipsLeft == 0)? "Ви програли" : "Ви перемогли";
-        String text = (ai.shipsLeft == 0)? "Яка поразка...Мастросе, Вас переміг Штучний інтелект." : "Матросе! Вітаю Вас з черговим яскравим досягненням.";
+        time += allTime + " sec.";
+        String caption = (ai.shipsLeft == 0)? "You lose" : "You win";
+        String text = (ai.shipsLeft == 0)? "What a defeat ... Sailor, you were defeated by Artificial Intelligence." : "Sailor! Congratulations on another outstanding achievement.";
         ResultWindow resultWindow = new ResultWindow(time, String.valueOf(amountOfShot), text, caption, (Stage) menuBar.getScene().getWindow());
         try {
             resultWindow.start(new Stage());

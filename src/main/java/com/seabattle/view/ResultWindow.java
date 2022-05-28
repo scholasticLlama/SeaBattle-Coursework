@@ -75,7 +75,7 @@ public class ResultWindow extends Application {
         infoLabel.setWrapText(true);
         infoLabel.setTextAlignment(TextAlignment.CENTER);
         infoLabel.setAlignment(Pos.CENTER);
-        infoLabel.setText("Ви зробили: " + amountOfShoot + " пострілів. " + "Гра тривала " + time);
+        infoLabel.setText("You did: " + amountOfShoot + " shots. " + "The game went on " + time);
         infoLabel.setFont(Font.font("Calibri", FontPosture.REGULAR, 24));
         infoLabel.setStyle("-fx-text-fill:#00072c;");
 
