@@ -5,8 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
+/**
+ * This class processes data of the program menu window.
+ * @author Kiril Vashchuk
+ * @author Yaroslava Kozhemiako
+ * @author Yaroslava Nehrych
+ */
 public class MenuWindowController {
 
     @FXML
@@ -25,6 +32,10 @@ public class MenuWindowController {
     private Label minimizeButton;
 
     @FXML
+    /**
+     * Method to initialize buttons for game functionality
+     * @throws URISyntaxException error handling if file path is not found
+     */
     void initialize() throws URISyntaxException {
         WindowControlManager.closeWindow(exitButton);
         WindowControlManager.minimizeWindow(minimizeButton);

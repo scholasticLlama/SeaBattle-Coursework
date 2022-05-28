@@ -21,6 +21,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+/**
+ * This class processes data of the ship layout window.
+ * @author Kiril Vashchuk
+ * @author Yaroslava Kozhemiako
+ * @author Yaroslava Nehrych
+ */
 public class ArrangementWindowController {
     @FXML
     public GridPane myField;
@@ -80,6 +86,10 @@ public class ArrangementWindowController {
     private ImageView twoDeck_3;
 
     @FXML
+    /**
+     * Method that initialize images of ships
+     * @throws URISyntaxException error handling if not all ships are used and if file path is not found
+     */
     void initialize() throws URISyntaxException {
         Image oneShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_1x1_H.png")).toExternalForm());
         Image twoShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H.png")).toExternalForm());

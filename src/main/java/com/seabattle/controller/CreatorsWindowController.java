@@ -8,6 +8,12 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * This class processes data of the program creators window.
+ * @author Kiril Vashchuk
+ * @author Yaroslava Kozhemiako
+ * @author Yaroslava Nehrych
+ */
 public class CreatorsWindowController {
 
     @FXML
@@ -32,6 +38,10 @@ public class CreatorsWindowController {
     private Hyperlink telegramButtonV;
 
     @FXML
+    /**
+     * Method to initialize buttons for game functionality and providing information about game creators
+     * @throws URISyntaxException error handling if file path is not found
+     */
     void initialize() throws URISyntaxException {
         WindowControlManager.closeWindow(exitButton);
         WindowControlManager.minimizeWindow(minimizeButton);
