@@ -56,6 +56,7 @@ public class BattleWindowController {
     private int myShipsLeft;
     private long startTime;
     private int amountOfShot = 0;
+    private int amountOfHit = 0;
     private final boolean[] turn = new boolean[]{true};
     private final Label[][] enemyShipsLabel = new Label[10][10];
     private final Label[][] myShipsLabel = new Label[10][10];
@@ -260,12 +261,14 @@ public class BattleWindowController {
                     }catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    amountOfHit++;
+                    int finalAmountOfHit = amountOfHit;
                     Platform.runLater(() -> {
                         myFieldGrid.add(labels.get(finalI), position.get(finalI)[1],  position.get(finalI)[0]);
                         ImageView imageView = (ImageView) labels.get(finalI).getGraphic();
                         if (Objects.equals(imageView.getImage().getUrl(),finalUrl)) {
-                            Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid);
-                        }
+                            Ship.isBrokenEnemy(ai.brokenShips, myShipsLabel, myFieldGrid, finalAmountOfHit);
+                        } else amountOfHit--;
                         sounds.get(finalI).sound();
                     });
                     if (i == labels.size() - 1) {

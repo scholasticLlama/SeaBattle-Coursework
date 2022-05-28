@@ -95,7 +95,7 @@ public class Ship {
         return counter == Integer.parseInt(shipInfo[0]);
     }
 
-    public static void isBrokenEnemy(ArrayList<String> brokenShips, Label[][] myShipsLabel, GridPane myFieldGrid) {
+    public static void isBrokenEnemy(ArrayList<String> brokenShips, Label[][] myShipsLabel, GridPane myFieldGrid, int amountOfHit) {
         Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
         if (brokenShips.size() > 0) {
             for (String brokenShip : brokenShips) {
@@ -103,9 +103,12 @@ public class Ship {
                 int length = Integer.parseInt(brokenShipInfoArray[0]);
                 int rowBroken = Integer.parseInt(brokenShipInfoArray[1]);
                 int columnBroken = Integer.parseInt(brokenShipInfoArray[2]);
-                GridPaneControl.clearGraphicInArray(myShipsLabel);
-                GridPaneControl.setEmptyImage(rowBroken, columnBroken, length, myShipsLabel, emptyCell);
-                GridPaneControl.setLabelsToGridPane(myFieldGrid, myShipsLabel);
+                if (amountOfHit >= length) {
+                    GridPaneControl.clearGraphicInArray(myShipsLabel);
+                    GridPaneControl.setEmptyImage(rowBroken, columnBroken, length, myShipsLabel, emptyCell);
+                    GridPaneControl.setLabelsToGridPane(myFieldGrid, myShipsLabel);
+                    amountOfHit = 0;
+                }
             }
             brokenShips.clear();
         }
