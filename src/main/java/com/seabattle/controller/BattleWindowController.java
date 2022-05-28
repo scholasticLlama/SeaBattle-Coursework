@@ -26,6 +26,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * This class processes data of the ship battle window.
+ * @author Kiril Vashchuk
+ * @author Yaroslava Kozhemiako
+ * @author Yaroslava Nehrych
+ */
 public class BattleWindowController {
 
     @FXML
@@ -63,6 +69,11 @@ public class BattleWindowController {
     private final int[][] myField = new int[10][10];
 
     @FXML
+    /**
+     * Method to initialize images of ships on the player`s field and buttons, the path to each new image is specified
+     * @throws URISyntaxException error handling if file path is not found
+     * @throws IOException error handling if file path is not found
+     */
     void initialize() throws IOException, URISyntaxException {
         Image oneShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_1x1_H.png")).toExternalForm());
         Image twoShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H.png")).toExternalForm());
@@ -90,7 +101,10 @@ public class BattleWindowController {
         WindowControlManager.dragWindow(menuBar, closeWindowButton, minimizeWindowButton, homeWindowButton);
 
     }
-
+    /**
+     * Method sets the appropriate images and sounds on the opponent's field during the player's moves
+     * @throws URISyntaxException error handling if file path is not found
+     */
     void enemyField() throws URISyntaxException {
         Image hitShip = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/HitCell.png")).toExternalForm());
         Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
@@ -206,7 +220,10 @@ public class BattleWindowController {
             }
         }
     }
-
+    /**
+     * Method sets the appropriate images and sounds during the moves of artificial intelligence
+     * @param shots the shots performed by artificial intelligence
+     */
     private void aiShotSetImage(ArrayList<String> shots) {
         Image hitShip = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/HitCell.png")).toExternalForm());
         Image emptyCell = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EmptyCell.png")).toExternalForm());
@@ -239,14 +256,22 @@ public class BattleWindowController {
         ai.shots.clear();
         setElementsWithDelay(positions, labels, sounds);
     }
-
+    /**
+     * Method sets an image that shows whose turn it is to make a move
+     * @param myMove variable to determine sequence of moves
+     */
     private void setMoveImage(boolean myMove) {
         Image myMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/MyMoveArrow.png")).toExternalForm());
         Image enemyMoveArrowImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/EnemyMoveArrow.png")).toExternalForm());
         if (myMove) whoseMoveImage.setImage(myMoveArrowImage);
         else whoseMoveImage.setImage(enemyMoveArrowImage);
     }
-
+    /**
+     * Method which sets an appropriate elements with a random delay during the opponent's moves
+     * @param position defines positions for labeling
+     * @param labels the labels that are setted at certain moves
+     * @param sounds the sounding that are performed at certain moves
+     */
     private void setElementsWithDelay(ArrayList<Integer[]> position, ArrayList<Label> labels, ArrayList<Audio> sounds) {
         if (Objects.equals(threadId, "null")) {
             enemyFieldGrid.setDisable(true);
@@ -285,7 +310,9 @@ public class BattleWindowController {
             thread.start();
         } else enemyFieldGrid.setDisable(true);
     }
-
+    /**
+     * Method determines the results of the game, namely the time of the game, amount of moves and the winner
+     */
     private void resultWindow() {
         long endTime = System.currentTimeMillis();
         long allTime = (endTime - startTime) / 1000;
@@ -304,7 +331,10 @@ public class BattleWindowController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Method to get the file path
+     * @throws URISyntaxException error if file path is not found
+     */
     private Path getFilePath(String name) throws URISyntaxException {
         URL url = Application.class.getResource(name);
         return Paths.get(Objects.requireNonNull(url).toURI());
