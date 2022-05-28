@@ -26,6 +26,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * A class that contains methods for managing window functions
+ */
 public class WindowControlManager {
     private static double x;
     private static double y;
@@ -33,6 +36,11 @@ public class WindowControlManager {
     private static double yOffset;
     private static boolean isPossibleToDrag;
 
+    /**
+     * This method terminates the program
+     * @param button the button to assign this action to
+     * @throws URISyntaxException error handling if file path not found
+     */
     public static void closeWindow(Label button) throws URISyntaxException {
         URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
         Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
@@ -46,6 +54,11 @@ public class WindowControlManager {
         });
     }
 
+    /**
+     * This method hides the application on the taskbar
+     * @param button the button to assign this action to
+     * @throws URISyntaxException error handling if file path not found
+     */
     public static void minimizeWindow(Label button) throws URISyntaxException {
         URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
         Path pathAudioClickButton = Paths.get(Objects.requireNonNull(urlAudioClickButton).toURI());
@@ -59,6 +72,13 @@ public class WindowControlManager {
         });
     }
 
+    /**
+     * This method allows you to drag and drop an application on the desktop
+     * @param menuBar part of the application with which you can drag the application (by standard, the top thing, that is, the menu bar)
+     * @param closeWindowButton window close button
+     * @param minimizeWindowButton window minimize button
+     * @param funcButton other buttons located on this menubar
+     */
     public static void dragWindow(AnchorPane menuBar, Label closeWindowButton, Label minimizeWindowButton, Label funcButton) {
         menuBar.setOnMousePressed(event -> {
             xOffset = event.getX();
@@ -77,6 +97,15 @@ public class WindowControlManager {
         });
     }
 
+    /**
+     * This method clears the field on which to place the ships
+     * @param button the button to assign this action to
+     * @param gridPane grid on which ships are placed
+     * @param ships list of ships that can be placed on the grid
+     * @param images array of ship images
+     * @param emptyImage empty (transparent) picture
+     * @param cell an array of labels that are placed on the grid and store images of ships
+     */
     public static void resetShips(Label button, GridPane gridPane, HashMap<Integer, ImageView[]> ships, Image[] images, ImageView emptyImage, Label[][] cell) {
         button.setOnMouseClicked(event -> {
             URL urlAudioResetButton = Application.class.getResource("resource/sound/ResetButton.wav");
@@ -106,6 +135,13 @@ public class WindowControlManager {
         });
     }
 
+    /**
+     * This method places ships on the grid in a random way.
+     * @param button the button to assign this action to
+     * @param gridPane grid on which ships are placed
+     * @param ships list of ships that can be placed on the grid
+     * @param emptyImage empty (transparent) picture
+     */
     public static void randomShipPlace(Label button, GridPane gridPane, HashMap<Integer, ImageView[]> ships, ImageView emptyImage) {
         button.setOnMouseClicked(event -> {
             URL urlAudioRandomPlaceButton = Application.class.getResource("resource/sound/RandomPlaceButton.wav");
@@ -163,6 +199,11 @@ public class WindowControlManager {
         });
     }
 
+    /**
+     * This method assigns the action of opening a new window to the button.
+     * @param button the button to assign this action to
+     * @param path path to the fxml file that contains the window structure
+     */
     public static void openNewWindowEvent(Label button, String path) {
         button.setOnMouseClicked(event -> {
             try {
@@ -173,6 +214,12 @@ public class WindowControlManager {
         });
     }
 
+    /**
+     *
+     * @param button a button that will perform this action, and by referring to which you can get the parent stage
+     * @param path path to the fxml file that contains the window structure
+     * @throws URISyntaxException error handling if file path not found
+     */
     public static void openNewWindow(Label button, String path) throws URISyntaxException {
         Image icon = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/icon-ship.png")).toExternalForm());
         URL urlAudioClickButton = Application.class.getResource("resource/sound/ClickButton.wav");
@@ -199,6 +246,11 @@ public class WindowControlManager {
         stage.hide();
     }
 
+    /**
+     * This method opens the default browser and visits the specified site
+     * @param hyperlink the "Hyperlink" element, when clicked, will open the site at the specified link
+     * @param url link
+     */
     public static void openBrowse(Hyperlink hyperlink, String url) {
         hyperlink.setOnMouseClicked(event -> {
             if(Desktop.isDesktopSupported()){

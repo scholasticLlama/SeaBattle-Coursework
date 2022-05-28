@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
 
+/**
+ * This class plays audio
+ * @param track path to the audio file to be played
+ */
 public record Audio(String track) {
 
     public void sound() {

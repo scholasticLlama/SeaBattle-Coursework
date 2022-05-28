@@ -18,11 +18,19 @@ import javafx.stage.StageStyle;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+/**
+ * A class that creates an information window that can be used to display errors, warnings, or tips.
+ */
 public class InfoWindow extends Application {
     String errorMassage;
     String caption;
     Stage ownerStage;
 
+    /**
+     * @param errorMassage error, warning or hint text
+     * @param caption window caption
+     * @param ownerStage the main stage, to which this information window will be attached
+     */
     public InfoWindow(String errorMassage,  String caption, Stage ownerStage) {
         this.errorMassage = errorMassage;
         this.caption = caption;

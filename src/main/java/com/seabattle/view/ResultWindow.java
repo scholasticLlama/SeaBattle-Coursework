@@ -18,6 +18,9 @@ import javafx.stage.StageStyle;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+/**
+ * This class creates a window for displaying the results of the game.
+ */
 public class ResultWindow extends Application {
     String time;
     String amountOfShoot;
@@ -25,6 +28,13 @@ public class ResultWindow extends Application {
     String caption;
     Stage ownerStage;
 
+    /**
+     * @param time the time during which the player played
+     * @param amountOfShoot number of shots fired by the player
+     * @param resultText the main text of the window, which contains a message to the player about winning or losing
+     * @param caption window caption
+     * @param ownerStage the main stage, to which this information window will be attached
+     */
     public ResultWindow(String time, String amountOfShoot, String resultText, String caption, Stage ownerStage) {
         this.time = time;
         this.amountOfShoot = amountOfShoot;
