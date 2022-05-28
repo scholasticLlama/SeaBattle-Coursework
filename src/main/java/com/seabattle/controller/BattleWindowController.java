@@ -28,8 +28,6 @@ import java.util.Objects;
 
 /**
  * This class processes data of the ship battle window.
- * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
  * @author Yaroslava Nehrych
  */
 public class BattleWindowController {

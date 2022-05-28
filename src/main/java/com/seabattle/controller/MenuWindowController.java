@@ -10,8 +10,6 @@ import java.net.URISyntaxException;
 
 /**
  * This class processes data of the program menu window.
- * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
  * @author Yaroslava Nehrych
  */
 public class MenuWindowController {

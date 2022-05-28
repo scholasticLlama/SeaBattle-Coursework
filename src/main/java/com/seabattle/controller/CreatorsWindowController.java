@@ -10,8 +10,6 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  * This class processes data of the program creators window.
- * @author Kiril Vashchuk
- * @author Yaroslava Kozhemiako
  * @author Yaroslava Nehrych
  */
 public class CreatorsWindowController {
