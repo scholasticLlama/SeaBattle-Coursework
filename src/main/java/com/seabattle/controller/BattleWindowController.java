@@ -66,12 +66,12 @@ public class BattleWindowController {
     private final Label[][] myShipsLabel = new Label[10][10];
     private final int[][] myField = new int[10][10];
 
-    @FXML
     /**
      * Method to initialize images of ships on the player`s field and buttons, the path to each new image is specified
      * @throws URISyntaxException error handling if file path is not found
      * @throws IOException error handling if file path is not found
      */
+    @FXML
     void initialize() throws IOException, URISyntaxException {
         Image oneShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_1x1_H.png")).toExternalForm());
         Image twoShipImage = new Image(Objects.requireNonNull(Application.class.getResource("resource/photo/Ship_2x1_H.png")).toExternalForm());

@@ -124,7 +124,7 @@ public class ArrangementWindowController {
                 }
             } else {
                 String errorMassage = "You haven't used all the ships! Arrange all these ships, and try again.";
-                InfoWindow infoWindow = new InfoWindow(errorMassage, "Помилка", (Stage) startGame.getScene().getWindow());
+                InfoWindow infoWindow = new InfoWindow(errorMassage, "Error", (Stage) startGame.getScene().getWindow());
                 try {
                     infoWindow.start(new Stage());
                 } catch (URISyntaxException e) {
