@@ -218,7 +218,7 @@ public class WindowControlManager {
     }
 
     /**
-     *
+     * This method opens new window
      * @param button a button that will perform this action, and by referring to which you can get the parent stage
      * @param path path to the fxml file that contains the window structure
      * @throws URISyntaxException error handling if file path not found
